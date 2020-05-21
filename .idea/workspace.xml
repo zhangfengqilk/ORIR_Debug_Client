@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Python_TCP_Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ORIR_Debug_Client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tcp_logic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Client.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ORIR_Debug_Client.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" afterDir="false" />
     </list>
@@ -27,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Yi" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1c4gK3vqsGxloznvdVwG4IAJRRI" />
@@ -196,7 +195,25 @@
       <option name="presentableId" value="Default" />
       <updated>1589793212974</updated>
     </task>
+    <task id="LOCAL-00001" summary="修改了通信协议 V0.3.0">
+      <created>1590051492973</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1590051492974</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -210,5 +227,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="修改了通信协议 V0.3.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改了通信协议 V0.3.0" />
   </component>
 </project>

@@ -319,7 +319,7 @@
        <property name="title">
         <string>调试框</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,0,0,0,0" columnstretch="1,0,0,0">
+       <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,5,0,2,0" columnstretch="0,0,0,0">
         <property name="leftMargin">
          <number>9</number>
         </property>

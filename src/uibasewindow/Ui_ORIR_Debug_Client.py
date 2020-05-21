@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ORIR_Debug_Client.ui',
 # licensing of 'ORIR_Debug_Client.ui' applies.
 #
-# Created: Thu May 21 16:10:35 2020
+# Created: Thu May 21 17:29:41 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -187,7 +187,8 @@ class Ui_ORIR_Debug_Client(object):
         self.is_show_as_hex_cb.setChecked(True)
         self.is_show_as_hex_cb.setObjectName("is_show_as_hex_cb")
         self.gridLayout_21.addWidget(self.is_show_as_hex_cb, 2, 2, 1, 1)
-        self.gridLayout_21.setColumnStretch(0, 1)
+        self.gridLayout_21.setRowStretch(1, 5)
+        self.gridLayout_21.setRowStretch(3, 2)
         self.gridLayout_22.addWidget(self.groupBox_11, 0, 2, 6, 1)
         self.groupBox_3 = QtWidgets.QGroupBox(ORIR_Debug_Client)
         self.groupBox_3.setObjectName("groupBox_3")
