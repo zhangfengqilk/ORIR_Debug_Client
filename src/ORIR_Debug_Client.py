@@ -139,15 +139,17 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
     def construct_cmd(self, device_type, data_len, opcode, data=''):
         cmd = bytearray()
         cmd += bytearray.fromhex('5aa5') # 帧头
-        cmd += bytearray.fromhex(self.int2hex_str(2, data_len + 11)) # 总长度
+        cmd += bytearray.fromhex(self.int2hex_str(2, 13)) # 总长度
         cmd += bytearray.fromhex('01')  # 地址
         cmd += bytearray.fromhex(self.int2hex_str(1, device_type)) # 设备类型
 
-        cmd += bytearray.fromhex(self.int2hex_str(2, data_len)) # 数据域长度
+        # cmd += bytearray.fromhex(self.int2hex_str(2, data_len)) # 数据域长度
         cmd += bytearray.fromhex(self.int2hex_str(1, opcode)) # 操作码
         if data:
-            cmd += bytearray.fromhex(self.int2hex_str(data_len - 1, data))
-        cmd += bytearray.fromhex('0000')
+            cmd += bytearray.fromhex(self.int2hex_str(4, data))
+        else:
+            cmd += bytearray.fromhex(self.int2hex_str(4, 0))
+        cmd += bytearray.fromhex('00')
         cmd += bytearray.fromhex('ff')
         return cmd
 
@@ -166,7 +168,7 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
                 run_msg = description  + '：' + str(data) + '：\n' + self.byte2hex_str(cmd) + '\n'
             else:
                 run_msg = '发送' + description + '指令：\n' + self.byte2hex_str(cmd) + '\n'
-            self.runinfo_signal.emit(run_msg)
+            self.runinfo_signal.emit(run_msg, None)
 
 
 ##-------------------------云台指令-------------------------------
@@ -325,7 +327,7 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
                 self.udp_client_start(str(self.ip_addr_le.text()), int(self.port_le.text()))
             self.link = True
             self.net_connect_btn.setText('断开')
-            self.runinfo_signal.emit('连接成功\n')
+            self.runinfo_signal.emit('连接成功\n', None)
         elif self.net_connect_btn.text() == '断开':
             self.close_all()
             self.link = False
@@ -334,6 +336,7 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
     def close_all(self):
         if self.net_type_cbb.currentIndex() in [0, 1]:
             self.tcp_close()
+            self.client_socket_list.clear()
         elif self.net_type_cbb.currentIndex() in [2, 3]:
             self.udp_close()
 
@@ -361,18 +364,49 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
             if self.udp_send(data):
                 return True
 
-    def show_runinfo(self, info):
+    def show_runinfo(self, info, data=None):
         msg = '[' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')  + '] '+ info
         self.runinfo_te.insertPlainText(msg)
+        if data:
+            if self.is_show_as_hex_cb.isChecked():
+                self.runinfo_te.insertPlainText(self.byte2hex_str(data))
+            else:
+                try:
+                    self.runinfo_te.insertPlainText(data.decode('utf-8'))
+                except:
+                    self.runinfo_te.insertPlainText('无法正确显示，请尝试使用十六进制显示')
+            self.runinfo_te.insertPlainText('\n')
         self.runinfo_te.moveCursor(QTextCursor.End)
 
-    def parse_recv_data(self, data):
+    def parse_recv_data(self, frame):
         """
         从底层ARM板 接收到的消息，在此解析
         :param data:
         :return:
         """
-        print('received: ', data)
+        # if self.is_show_as_hex_cb.isChecked():
+        #     self.runinfo_signal.emit(data.hex())
+        # else:
+        #     try:
+        #         self.runinfo_signal.emit(data.decode('utf-8'))
+        #     except:
+        #         self.runinfo_signal.emit(data.hex())
+
+        # if list(data)[0:2] == '5AA5':
+        print('received: ', list(frame))
+        recvd_msg = list(frame)
+        if recvd_msg[0] == 0x5A and recvd_msg[1] == 0xA5: # 接收到帧头
+            tot_len = recvd_msg[2] * 256 + recvd_msg[3]  # 取出长度
+            if recvd_msg[tot_len - 1] == 0xFF:  # 帧尾
+                device_type = recvd_msg[5] # 设备类型
+                op_code = recvd_msg[6]  # 操作码
+                data = recvd_msg[7] * 256^3 + recvd_msg[8] * 256^2 + recvd_msg[9] * 256 + recvd_msg[10]
+
+                print('op_code:', op_code)
+
+
+
+
 
     def send_debug_msg(self):
         msg = str(self.send_debug_msg_te.toPlainText())
@@ -424,6 +458,6 @@ if __name__ == "__main__":
     with open('../resources/Qss/wineRed.qss', encoding='utf-8') as stylesheet:
         window.setStyleSheet(stylesheet.read())
 
-    window.setWindowTitle('挂轨机器人通信调试上位机 V0.1 2020-05-19 by Yi')
+    window.setWindowTitle('挂轨机器人通信调试上位机 V0.3.0 2020-05-21 by Yi')
     window.show()
     sys.exit(app.exec_())

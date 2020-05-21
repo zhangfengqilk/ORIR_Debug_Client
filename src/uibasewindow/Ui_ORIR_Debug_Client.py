@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ORIR_Debug_Client.ui',
 # licensing of 'ORIR_Debug_Client.ui' applies.
 #
-# Created: Wed May 20 17:37:39 2020
+# Created: Thu May 21 16:10:35 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -180,11 +180,13 @@ class Ui_ORIR_Debug_Client(object):
         self.label_15.setObjectName("label_15")
         self.gridLayout_21.addWidget(self.label_15, 4, 1, 1, 1)
         self.send_hex_data_cb = QtWidgets.QCheckBox(self.groupBox_11)
+        self.send_hex_data_cb.setChecked(True)
         self.send_hex_data_cb.setObjectName("send_hex_data_cb")
         self.gridLayout_21.addWidget(self.send_hex_data_cb, 4, 2, 1, 1)
-        self.checkBox_2 = QtWidgets.QCheckBox(self.groupBox_11)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.gridLayout_21.addWidget(self.checkBox_2, 2, 2, 1, 1)
+        self.is_show_as_hex_cb = QtWidgets.QCheckBox(self.groupBox_11)
+        self.is_show_as_hex_cb.setChecked(True)
+        self.is_show_as_hex_cb.setObjectName("is_show_as_hex_cb")
+        self.gridLayout_21.addWidget(self.is_show_as_hex_cb, 2, 2, 1, 1)
         self.gridLayout_21.setColumnStretch(0, 1)
         self.gridLayout_22.addWidget(self.groupBox_11, 0, 2, 6, 1)
         self.groupBox_3 = QtWidgets.QGroupBox(ORIR_Debug_Client)
@@ -466,7 +468,7 @@ class Ui_ORIR_Debug_Client(object):
         self.label_13.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "发送框", None, -1))
         self.label_15.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "ms", None, -1))
         self.send_hex_data_cb.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "十六进制发送", None, -1))
-        self.checkBox_2.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "十六进制显示", None, -1))
+        self.is_show_as_hex_cb.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "十六进制显示", None, -1))
         self.groupBox_3.setTitle(QtWidgets.QApplication.translate("ORIR_Debug_Client", "行走电机", None, -1))
         self.walkmotor_forward_btn.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "前进", None, -1))
         self.walkmotor_poweron_btn.setText(QtWidgets.QApplication.translate("ORIR_Debug_Client", "上电", None, -1))

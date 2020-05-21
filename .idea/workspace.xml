@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="" />
+    <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Python_TCP_Client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ORIR_Debug_Client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/Readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tcp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Client.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ORIR_Debug_Client.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,9 +26,13 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1c4gK3vqsGxloznvdVwG4IAJRRI" />
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/icons" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Python" />
   </component>
@@ -46,7 +61,7 @@
   </component>
   <component name="RunManager" selected="Python.ORIR_Debug_Client">
     <configuration name="ORIR_Debug_Client" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python_TCP_Client" />
+      <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -67,7 +82,7 @@
       <method v="2" />
     </configuration>
     <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python_TCP_Client" />
+      <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -88,7 +103,7 @@
       <method v="2" />
     </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python_TCP_Client" />
+      <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -109,7 +124,7 @@
       <method v="2" />
     </configuration>
     <configuration name="tcp_client" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python_TCP_Client" />
+      <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -130,7 +145,7 @@
       <method v="2" />
     </configuration>
     <configuration name="tcp_logic" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Python_TCP_Client" />
+      <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -182,5 +197,18 @@
       <updated>1589793212974</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
