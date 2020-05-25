@@ -1,0 +1,7 @@
+/build/
+/dist/
+/src/__pycache__/
+/src/uibasewindow/__pycache__/
+/ORIR_Debug_Client.spec
+/pyinstaller.spec
+/src/uibasewindow/__pycache__/Ui_ORIR_Debug_Client.cpython-37.pyc

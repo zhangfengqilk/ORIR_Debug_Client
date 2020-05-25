@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QApplication, QWidget, QListView
+from PySide2.QtWidgets import QApplication, QWidget, QListView, QMessageBox
 from PySide2.QtGui import QTextCursor
 from PySide2 import QtCore
 from src.uibasewindow.Ui_ORIR_Debug_Client import Ui_ORIR_Debug_Client
@@ -21,6 +21,12 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
         self.send_period = 0
         self.is_cycle_send = False
         self.net_type_cbb.setView(QListView())
+
+        # 标志位
+        self.is_ptz_bearing_inplace = False
+        self.is_ptz_pitching_inplace = False
+        self.is_lift_inplace = False
+        self.is_walkmotor_inplace = False
 
     def signal_connect(self):
         """
@@ -212,10 +218,14 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
     def ptz_set_bearing(self):
         bearing = int(float(self.ptz_bearing_le.text()) * 100)
         self.send_single_cmd(0x01, 0x03, 0x09, bearing, '设置云台方位')
+        self.is_ptz_bearing_inplace = True
+        self.ptz_inplace_le.setText('')
 
     def ptz_set_pitching(self):
         pitching = int(float(self.ptz_pitching_le.text()) * 100)
         self.send_single_cmd(0x01, 0x03, 0x0a, pitching, '设置云台俯仰')
+        self.is_ptz_pitching_inplace = True
+        self.ptz_inplace_le.setText('')
 
     def ptz_query_bearing(self):
         self.send_single_cmd(0x01, 0x01, 0x0d, '', '查询方位')
@@ -260,6 +270,8 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
 
     def walkmotor_query_pos(self):
         self.send_single_cmd(0x03, 0x01, 0x07, '', '查询行走电机位置')
+        self.is_walkmotor_inplace = True
+        self.walkmotor_inplace_le.setText('')
 
     def walkmotor_query_velocity(self):
         self.send_single_cmd(0x03, 0x01, 0x0a, '', '查询行走电机速度')
@@ -275,9 +287,13 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
 ##----------------------升降杆指令-----------------------------------
     def lifter_up(self):
         self.send_single_cmd(0x05, 0x01, 0x01, '', '升降杆上升')
+        self.lifter_inplace_le.setText('')
+        self.is_lift_inplace = True
 
     def lifter_down(self):
         self.send_single_cmd(0x05, 0x01, 0x02, '', '升降杆下降')
+        self.lifter_inplace_le.setText('')
+        self.is_lift_inplace = True
 
     def lifter_stop(self):
         self.send_single_cmd(0x05, 0x01, 0x03, '', '升降杆停止')
@@ -341,6 +357,19 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
             self.udp_close()
 
 
+    def closeEvent(self, event):
+        # message为窗口标题
+        # Are you sure to quit?窗口显示内容
+        # QtGui.QMessageBox.Yes | QtGui.QMessageBox.No窗口按钮部件
+        # QtGui.QMessageBox.No默认焦点停留在NO上
+        reply = QMessageBox.question(self, 'Message', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        # 判断返回结果处理相应事项
+        if reply == QMessageBox.Yes:
+            self.close_all()
+            event.accept()
+        else:
+            event.ignore()
+
     def get_host_ip(self):
         """
         获取本机IP
@@ -384,16 +413,6 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
         :param data:
         :return:
         """
-        # if self.is_show_as_hex_cb.isChecked():
-        #     self.runinfo_signal.emit(data.hex())
-        # else:
-        #     try:
-        #         self.runinfo_signal.emit(data.decode('utf-8'))
-        #     except:
-        #         self.runinfo_signal.emit(data.hex())
-
-        # if list(data)[0:2] == '5AA5':
-        # print('received: ', list(frame))
         recvd_msg = list(frame)
         if recvd_msg[0] == 0x5A and recvd_msg[1] == 0xA5: # 接收到帧头
             tot_len = recvd_msg[2] * 256 + recvd_msg[3]  # 取出长度
@@ -402,42 +421,67 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
                 op_code = recvd_msg[6]  # 操作码
                 data = recvd_msg[7] * 256 * 256 * 256 + recvd_msg[8] * 256 * 256 + recvd_msg[9] * 256 + recvd_msg[10]
 
-                # print('op_code:', op_code, 'data: ', data)
                 # 解析云台
                 if device_type == 0x01:
                     if op_code == 0x0F:
                         self.runinfo_signal.emit('方位到位', None)
+                        if self.is_ptz_pitching_inplace:
+                            self.ptz_inplace_le.setText('方位俯仰到位')
+                        else:
+                            self.ptz_inplace_le.setText('方位到位')
+                        self.is_ptz_bearing_inplace = True
                     if op_code == 0x10:
                         self.runinfo_signal.emit('俯仰到位', None)
+                        if self.is_ptz_bearing_inplace:
+                            self.ptz_inplace_le.setText('方位俯仰到位')
+                        else:
+                            self.ptz_inplace_le.setText('俯仰到位')
+                        self.is_ptz_pitching_inplace = True
+
                     if op_code == 0x11:
                         bearing = data
                         self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
+                        self.ptz_bearing_le.setText(str(float(bearing / 100)))
                     if op_code == 0x12:
                         pitching = data
                         self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
+                        self.ptz_pitching_le.setText(str(float(pitching / 100)))
+
                     if op_code == 0x13:
                         velocity = data
                         self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
-
+                        self.ptz_velocity_le.setText(str(float(velocity / 100)))
+                # 局放
                 if device_type == 0x02:
                     if op_code == 0x02:
                         self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
-
+                        self.partialdischarge_result_le.setText(str(float(data / 100)))
+                # 行走电机
                 if device_type == 0x03:
                     if op_code == 0x08:
                         self.runinfo_signal.emit('行走电机位置： ' + str(float(data / 100)), None)
+                        self.walkmotor_pos_le.setText(str(float(data / 100)))
                     if op_code == 0x0B:
                         self.runinfo_signal.emit('行走电机速度： ' + str(float(data / 100)), None)
+                        self.walkmotor_velocity_le.setText(str(float(data / 100)))
+                    if op_code == 0x0c:
+                        self.is_walkmotor_inplace = True
+                        self.walkmotor_inplace_le.setText('到位')
 
                 if device_type == 0x04:
                     if op_code == 0x02:
                         self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
+                        self.barcode_position_le.setText(str(float(data / 100)))
+
 
                 if device_type == 0x05:
                     if op_code == 0x04:
                         self.runinfo_signal.emit('升降杆到位', None)
+                        self.is_lift_inplace = True
+                        self.lifter_inplace_le.setText('到位')
                     if op_code == 0x06:
                         self.runinfo_signal.emit('升降杆位置： ' + str(float(data / 100)), None)
+                        self.lifter_pos_le.setText(str(float(data / 100)))
 
                 if device_type == 0x06:
                     if op_code == 0x01:
@@ -462,7 +506,6 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
                 if device_type == 0x08:
                     if op_code == 0x02:
                         self.runinfo_signal.emit('测距结果值： ' + str(float(data / 100)), None)
-
 
 
     def send_debug_msg(self):
