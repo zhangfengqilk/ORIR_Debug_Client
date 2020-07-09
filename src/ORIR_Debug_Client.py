@@ -510,7 +510,7 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
 
     def send_debug_msg(self):
         msg = str(self.send_debug_msg_te.toPlainText())
-        self.runinfo_signal.emit('发送：' + msg + '\n')
+        self.runinfo_signal.emit('发送：' + msg + '\n', None)
         # print('msg1: ', msg, type(msg))
         if self.send_hex_data_cb.isChecked():
             msg = msg.replace(' ', '')
@@ -538,7 +538,7 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
 
         while self.is_cycle_send:
             msg = str(self.send_debug_msg_te.toPlainText())
-            self.runinfo_signal.emit('发送：' + msg + '\n')
+            self.runinfo_signal.emit('发送：' + msg + '\n', None)
             # print('msg1: ', msg, type(msg))
             if self.send_hex_data_cb.isChecked():
                 msg = msg.replace(' ', '')
@@ -558,6 +558,6 @@ if __name__ == "__main__":
     with open('../resources/Qss/wineRed.qss', encoding='utf-8') as stylesheet:
         window.setStyleSheet(stylesheet.read())
 
-    window.setWindowTitle('挂轨机器人通信调试上位机 V0.3.0 2020-05-21 by Yi')
+    window.setWindowTitle('挂轨机器人通信调试上位机 V0.3.2 2020-05-25 by Yi')
     window.show()
     sys.exit(app.exec_())

@@ -90,14 +90,14 @@ class TcpLogic(Ui_ORIR_Debug_Client):
         try:
             address = (ip_addr, port)
         except Exception as ret:
-            self.runinfo_signal.emit('请检查目标IP，目标端口\n')
+            self.runinfo_signal.emit('请检查目标IP，目标端口\n',None)
         else:
             try:
-                self.runinfo_signal.emit('正在连接目标服务器\n')
+                self.runinfo_signal.emit('正在连接目标服务器\n',None)
                 self.tcp_socket.connect(address)
 
             except Exception as ret:
-                self.runinfo_signal.emit('无法连接目标服务器\n')
+                self.runinfo_signal.emit('无法连接目标服务器\n',None)
             else:
                 self.client_th = threading.Thread(target=self.tcp_client_concurrency, args=(address,))
                 self.client_th.start()
