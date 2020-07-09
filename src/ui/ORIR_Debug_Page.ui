@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ORIR_Debug_Client</class>
- <widget class="QWidget" name="ORIR_Debug_Client">
+ <class>ORIR_Debug_Page</class>
+ <widget class="QWidget" name="ORIR_Debug_Page">
   <property name="geometry">
    <rect>
     <x>0</x>

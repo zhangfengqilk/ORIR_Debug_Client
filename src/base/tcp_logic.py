@@ -3,11 +3,11 @@ from PySide2 import QtWidgets, QtCore
 import socket
 import threading
 import sys
-from src import stopThreading
+from src.base import stopThreading
 import time
-from src.uibasewindow.Ui_ORIR_Debug_Client import Ui_ORIR_Debug_Client
+# from src.uibasewindow.Ui_ORIR_Debug_Client import Ui_ORIR_Debug_Client
 
-class TcpLogic(Ui_ORIR_Debug_Client):
+class TcpLogic():
     runinfo_signal = QtCore.Signal(str, bytes)
     recv_data_signal = QtCore.Signal(bytes)
     def __init__(self):

@@ -20,9 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="">
+      <change afterPath="$PROJECT_DIR$/src/ORIR_main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/base/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_Collection_Data_Page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Help_Page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_LogAnalysis_Page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tcp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/stopThreading.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/stopThreading.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/tcp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/udp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/udp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Client.ui" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -57,18 +67,18 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.externalTools" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\resources\icons" />
+      <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\src" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\ORIR Debug Client\src\base" />
       <recent name="F:\SynologyDrive\Yi Work\Project Codes\2020 - Overhead Rail Inspection Robot\ORIR Debug Client\src" />
       <recent name="F:\SynologyDrive\Yi Work\Project Codes\2020 - Overhead Rail Inspection Robot\ORIR Debug Client" />
       <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\resources\Qss" />
-      <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\src" />
-      <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\src\ui" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\resources\icons" />
       <recent name="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\src" />
     </key>
   </component>
@@ -84,7 +94,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ORIR_Debug_Client (1)">
+  <component name="RunManager" selected="Python.ORIR_main">
     <configuration name="ORIR_Debug_Client (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -127,7 +137,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="ORIR_Debug_Page" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ORIR_Debug_Client" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/pages" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ORIR_main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ORIR_Debug_Client" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -139,28 +170,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\src\ORIR_Debug_Client.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="tcp_client" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="ORIR_Debug_Client" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\PreTest Code\Python_TCP_Client\src\tcp_client.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/ORIR_main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -181,7 +191,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/tcp_logic.py" />
+      <option name="SCRIPT_NAME" value="D:\NAS Drive\Yi_Work\Project Codes\2020 - Overhead Rail Inspection Robot\ORIR Debug Client\src\base\tcp_logic.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -192,11 +202,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ORIR_main" />
+        <item itemvalue="Python.ORIR_Debug_Page" />
         <item itemvalue="Python.ORIR_Debug_Client (1)" />
         <item itemvalue="Python.ORIR_Debug_Client" />
         <item itemvalue="Python.tcp_logic" />
-        <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.tcp_client" />
       </list>
     </recent_temporary>
   </component>

@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ORIR_Debug_Help</class>
+ <widget class="QWidget" name="ORIR_Debug_Help">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>992</width>
+    <height>725</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_23">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout_22" columnstretch="1,1,20">
+     <item row="0" column="2" rowspan="6">
+      <widget class="QGroupBox" name="groupBox_11">
+       <property name="title">
+        <string>调试框</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_21" rowstretch="0,5,0,2,0" columnstretch="0,0,0,0">
+        <property name="leftMargin">
+         <number>9</number>
+        </property>
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item row="1" column="0" colspan="4">
+         <widget class="QTextEdit" name="runinfo_te"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLineEdit" name="cycle_send_period_ms_le">
+          <property name="text">
+           <string>0</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QPushButton" name="clear_runinfo_btn">
+          <property name="text">
+           <string>清除</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="QPushButton" name="send_debug_msg_btn">
+          <property name="text">
+           <string>发送</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>接收框</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="4">
+         <widget class="QTextEdit" name="send_debug_msg_te">
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'SimSun';&quot;&gt;12345&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>发送框</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLabel" name="label_15">
+          <property name="text">
+           <string>ms</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="QCheckBox" name="send_hex_data_cb">
+          <property name="text">
+           <string>十六进制发送</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QCheckBox" name="is_show_as_hex_cb">
+          <property name="text">
+           <string>十六进制显示</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="1" column="0" rowspan="2">
+      <widget class="QGroupBox" name="groupBox_3">
+       <property name="title">
+        <string>行走电机</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_9">
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="2" column="1">
+           <widget class="QPushButton" name="walkmotor_forward_btn">
+            <property name="text">
+             <string>前进</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="walkmotor_poweron_btn">
+            <property name="text">
+             <string>上电</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="walkmotor_backward_btn">
+            <property name="text">
+             <string>后退</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="walkmotor_stop_btn">
+            <property name="text">
+             <string>停</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="walkmotor_poweroff_btn">
+            <property name="text">
+             <string>下电</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="3">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="walkmotor_set_pos_btn">
+            <property name="text">
+             <string>设置位置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="walkmotor_pos_le">
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="walkmotor_query_pos_btn">
+            <property name="text">
+             <string>查询位置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>  到位反馈</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="walkmotor_inplace_le"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="walkmotor_velocity_le">
+            <property name="text">
+             <string>1</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="walkmotor_set_velocity_btn">
+            <property name="text">
+             <string>设置速度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="walkmotor_query_velocity_btn">
+            <property name="text">
+             <string>速度查询</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="2" column="1" rowspan="3">
+      <layout class="QGridLayout" name="gridLayout_20">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>局放</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPushButton" name="partialdischarge_detect_btn">
+              <property name="text">
+               <string>探测</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="partialdischarge_result_le"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="title">
+          <string>条形码</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_17">
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="barcode_query_position_btn">
+              <property name="text">
+               <string>查询位置</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="barcode_position_le"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="title">
+          <string>霍尔</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_18">
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QPushButton" name="hall_query_position_btn">
+              <property name="text">
+               <string>查询位置</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="hall_position_le"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="title">
+          <string>测距</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_19">
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QPushButton" name="ranging_query_position_btn">
+              <property name="text">
+               <string>查询位置</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ranging_position_le"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0">
+      <widget class="QGroupBox" name="groupBox_4">
+       <property name="title">
+        <string>升降杆</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_11">
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="lifter_up_btn">
+            <property name="text">
+             <string>升</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="lifter_down_btn">
+            <property name="text">
+             <string>降</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="lifter_stop_btn">
+            <property name="text">
+             <string>停</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout_10">
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lifter_inplace_le"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lifter_pos_le"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>  到位反馈</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="lifter_query_pos_btn">
+            <property name="text">
+             <string>查询位置</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="4" column="0" rowspan="2">
+      <widget class="QGroupBox" name="groupBox_6">
+       <property name="title">
+        <string>光电开关</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_15">
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_14">
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="photoelectricswitch_5_le"/>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLineEdit" name="photoelectricswitch_2_le"/>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="photoelectricswitch_1_le"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>  开关3：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLineEdit" name="photoelectricswitch_6_le"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="photoelectricswitch_3_le"/>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLineEdit" name="photoelectricswitch_4_le"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>  开关1：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>  开关5：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>  开关2：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>  开关4：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>  开关6：</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QGroupBox" name="groupBox_5">
+       <property name="title">
+        <string>状态灯</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_13">
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_12">
+          <item row="0" column="0">
+           <widget class="QPushButton" name="statuslight_red_on_btn">
+            <property name="text">
+             <string>红灯亮</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="statuslight_yellow_on_btn">
+            <property name="text">
+             <string>黄灯亮</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="statuslight_green_on_btn">
+            <property name="text">
+             <string>绿灯亮</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="statuslight_all_off_btn">
+            <property name="text">
+             <string>灭</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <zorder></zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

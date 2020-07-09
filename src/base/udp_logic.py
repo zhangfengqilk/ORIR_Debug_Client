@@ -1,7 +1,7 @@
 from PySide2 import QtWidgets, QtCore
 from PySide2.QtCore import QObject
 
-from  src import stopThreading
+from src.base import stopThreading
 import socket
 import threading
 import sys
@@ -36,7 +36,7 @@ class UDPServer(AbstractNet):
 
 
 
-class UdpLogic(Ui_ORIR_Debug_Client):
+class UdpLogic():
     runinfo_signal = QtCore.Signal(str)
     recv_data_signal = QtCore.Signal(str)
     def __init__(self):

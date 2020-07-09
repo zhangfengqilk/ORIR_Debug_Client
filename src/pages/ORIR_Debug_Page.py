@@ -1,3 +1,5 @@
+from src.uibasewindow.Ui_ORIR_Debug_Page import Ui_ORIR_Debug_Page
+from PySide2.QtWidgets import QWidget,QFileDialog
 from PySide2.QtWidgets import QApplication, QWidget, QListView, QMessageBox
 from PySide2.QtGui import QTextCursor
 import sys
@@ -9,9 +11,13 @@ import datetime
 import threading
 
 
-class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
+class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def __init__(self):
-        super(ORIR_Debug_Client, self).__init__()
+        super(ORIR_Debug, self).__init__()
+        Ui_ORIR_Debug_Page.__init__(self)
+        TcpLogic.__init__(self)
+        UdpLogic.__init__(self)
+
         self.setupUi(self)
         self.link = False
         self.signal_connect()
@@ -355,18 +361,18 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
             self.udp_close()
 
 
-    def closeEvent(self, event):
-        # message为窗口标题
-        # Are you sure to quit?窗口显示内容
-        # QtGui.QMessageBox.Yes | QtGui.QMessageBox.No窗口按钮部件
-        # QtGui.QMessageBox.No默认焦点停留在NO上
-        reply = QMessageBox.question(self, 'Message', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        # 判断返回结果处理相应事项
-        if reply == QMessageBox.Yes:
-            self.close_all()
-            event.accept()
-        else:
-            event.ignore()
+    # def closeEvent(self, event):
+    #     # message为窗口标题
+    #     # Are you sure to quit?窗口显示内容
+    #     # QtGui.QMessageBox.Yes | QtGui.QMessageBox.No窗口按钮部件
+    #     # QtGui.QMessageBox.No默认焦点停留在NO上
+    #     reply = QMessageBox.question(self, 'Message', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+    #     # 判断返回结果处理相应事项
+    #     if reply == QMessageBox.Yes:
+    #         self.close_all()
+    #         event.accept()
+    #     else:
+    #         event.ignore()
 
     def get_host_ip(self):
         """
@@ -552,9 +558,9 @@ class ORIR_Debug_Client(QWidget, TcpLogic, UdpLogic):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = ORIR_Debug_Client()
-    with open('../resources/Qss/wineRed.qss', encoding='utf-8') as stylesheet:
-        window.setStyleSheet(stylesheet.read())
+    window = ORIR_Debug()
+    # with open('../resources/Qss/wineRed.qss', encoding='utf-8') as stylesheet:
+    #     window.setStyleSheet(stylesheet.read())
 
     window.setWindowTitle('挂轨机器人通信调试上位机 V0.3.2 2020-05-25 by Yi')
     window.show()
