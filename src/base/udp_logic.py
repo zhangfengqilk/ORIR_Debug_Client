@@ -5,8 +5,6 @@ from src.base import stopThreading
 import socket
 import threading
 import sys
-from src.uibasewindow.Ui_ORIR_Debug_Client import Ui_ORIR_Debug_Client
-
 
 class AbstractNet(QObject):
     runinfo_signal = QtCore.Signal(str)
@@ -37,8 +35,8 @@ class UDPServer(AbstractNet):
 
 
 class UdpLogic():
-    runinfo_signal = QtCore.Signal(str)
-    recv_data_signal = QtCore.Signal(str)
+    runinfo_signal = QtCore.Signal(str, bytes)
+    recv_data_signal = QtCore.Signal(bytes)
     def __init__(self):
         super(UdpLogic, self).__init__()
         self.udp_socket = None
@@ -62,12 +60,12 @@ class UdpLogic():
         try:
             self.udp_socket.bind((ip_addr, port))
         except Exception as ret:
-            self.runinfo_signal.emit('请检查端口号\n')
+            self.runinfo_signal.emit('请检查端口号\n', None)
         else:
             self.sever_th = threading.Thread(target=self.udp_server_concurrency)
             self.sever_th.start()
             msg = 'UDP服务端正在监听端口:{}\n'.format(port)
-            self.runinfo_signal.emit(msg)
+            self.runinfo_signal.emit(msg, None)
 
     def udp_server_concurrency(self):
         """
@@ -78,7 +76,7 @@ class UdpLogic():
             recv_msg, recv_addr = self.udp_socket.recvfrom(1024)
             msg = recv_msg.decode('utf-8')
             msg = '来自IP:{}端口:{}:\n{}\n'.format(recv_addr[0], recv_addr[1], msg)
-            self.runinfo_signal.emit(msg)
+            self.runinfo_signal.emit(msg, None)
             if recv_addr not in self.client_socket_list:
                 self.client_socket_list.append((recv_addr))
 
@@ -92,9 +90,9 @@ class UdpLogic():
         try:
             self.address = (ip_addr, port)
         except Exception as ret:
-            self.runinfo_signal.emit('请检查目标IP，目标端口\n')
+            self.runinfo_signal.emit('请检查目标IP，目标端口\n', None)
         else:
-            self.runinfo_signal.emit('UDP客户端已启动\n')
+            self.runinfo_signal.emit('UDP客户端已启动\n', None)
 
     def udp_send(self, data):
         """
@@ -102,20 +100,20 @@ class UdpLogic():
         :return: None
         """
         if self.link is False:
-            self.runinfo_signal.emit('请选择服务，并点击连接网络\n')
+            self.runinfo_signal.emit('请选择服务，并点击连接网络\n', None)
         else:
             try:
                 if self.net_type_cbb.currentIndex() == 2:
                     for client_addr in self.client_socket_list:
                         self.udp_socket.sendto(data, client_addr)
-                        self.runinfo_signal.emit('UDP服务端已发送\n')
+                        self.runinfo_signal.emit('UDP服务端已发送\n', None)
 
                 elif self.net_type_cbb.currentIndex() == 3:
                     self.udp_socket.sendto(data, self.address)
-                    self.runinfo_signal.emit('UDP客户端已发送\n')
+                    self.runinfo_signal.emit('UDP客户端已发送\n', None)
 
             except Exception as ret:
-                self.runinfo_signal.emit('发送失败\n')
+                self.runinfo_signal.emit('发送失败\n', None)
 
     def udp_close(self):
         """
@@ -126,14 +124,14 @@ class UdpLogic():
             try:
                 self.udp_socket.close()
                 if self.link is True:
-                    self.runinfo_signal.emit('已断开网络\n')
+                    self.runinfo_signal.emit('已断开网络\n', None)
             except Exception as ret:
                 pass
         if self.net_type_cbb.currentIndex() == 3:
             try:
                 self.udp_socket.close()
                 if self.link is True:
-                    self.runinfo_signal.emit('已断开网络\n')
+                    self.runinfo_signal.emit('已断开网络\n', None)
             except Exception as ret:
                 pass
         try:

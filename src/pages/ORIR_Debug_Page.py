@@ -9,7 +9,8 @@ from src.base.udp_logic import UdpLogic
 import time
 import datetime
 import threading
-
+def b2uint(bytes):
+    return int.from_bytes(bytes, byteorder='big', signed=False)
 
 class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def __init__(self):
@@ -149,7 +150,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def construct_cmd(self, device_type, data_len, opcode, data=''):
         cmd = bytearray()
         cmd += bytearray.fromhex('5aa5') # 帧头
-        cmd += bytearray.fromhex(self.int2hex_str(2, 13)) # 总长度
+        cmd += bytearray.fromhex(self.int2hex_str(1, 12)) # 总长度
         cmd += bytearray.fromhex('01')  # 地址
         cmd += bytearray.fromhex(self.int2hex_str(1, device_type)) # 设备类型
 
@@ -419,11 +420,12 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         """
         recvd_msg = list(frame)
         if recvd_msg[0] == 0x5A and recvd_msg[1] == 0xA5: # 接收到帧头
-            tot_len = recvd_msg[2] * 256 + recvd_msg[3]  # 取出长度
+            tot_len = recvd_msg[2]  # 取出长度
             if recvd_msg[tot_len - 1] == 0xFF:  # 帧尾
-                device_type = recvd_msg[5] # 设备类型
-                op_code = recvd_msg[6]  # 操作码
-                data = recvd_msg[7] * 256 * 256 * 256 + recvd_msg[8] * 256 * 256 + recvd_msg[9] * 256 + recvd_msg[10]
+                device_type = recvd_msg[4] # 设备类型
+                op_code = recvd_msg[5]  # 操作码
+                data = b2uint(bytes([frame[9], frame[8], frame[7], frame[6]]))
+                # data = recvd_msg[6] * 256 * 256 * 256 + recvd_msg[7] * 256 * 256 + recvd_msg[8] * 256 + recvd_msg[9]
 
                 # 解析云台
                 if device_type == 0x01:
@@ -464,10 +466,10 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
                 if device_type == 0x03:
                     if op_code == 0x08:
                         self.runinfo_signal.emit('行走电机位置： ' + str(float(data / 100)), None)
-                        self.walkmotor_pos_le.setText(str(float(data / 100)))
+                        self.walkmotor_realtime_pos_le.setText(str(float(data / 100)))
                     if op_code == 0x0B:
                         self.runinfo_signal.emit('行走电机速度： ' + str(float(data / 100)), None)
-                        self.walkmotor_velocity_le.setText(str(float(data / 100)))
+                        self.walkmotor_realtime_speed_le.setText(str(float(data / 100)))
                     if op_code == 0x0c:
                         self.is_walkmotor_inplace = True
                         self.walkmotor_inplace_le.setText('到位')

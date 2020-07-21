@@ -20,19 +20,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="">
-      <change afterPath="$PROJECT_DIR$/src/ORIR_main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/base/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_Collection_Data_Page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Help_Page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/ORIR_LogAnalysis_Page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ORIR_Debug_Client.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stopThreading.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/stopThreading.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/tcp_logic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/udp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/udp_logic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Client.ui" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ORIR_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ORIR_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/base/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/tcp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/base/udp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/udp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Page.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ORIR_Debug_Page.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -297,5 +291,31 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="793" y="342" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1590140603590" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
+          <line>427</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
+          <line>422</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/base/tcp_logic.py</url>
+          <line>171</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
+          <line>467</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

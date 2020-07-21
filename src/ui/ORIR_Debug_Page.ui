@@ -416,41 +416,6 @@ p, li { white-space: pre-wrap; }
         </property>
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_7">
-          <item row="2" column="1">
-           <widget class="QPushButton" name="walkmotor_forward_btn">
-            <property name="text">
-             <string>前进</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="walkmotor_poweron_btn">
-            <property name="text">
-             <string>上电</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="walkmotor_backward_btn">
-            <property name="text">
-             <string>后退</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QPushButton" name="walkmotor_stop_btn">
-            <property name="text">
-             <string>停</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="walkmotor_poweroff_btn">
-            <property name="text">
-             <string>下电</string>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="0">
            <spacer name="horizontalSpacer">
             <property name="orientation">
@@ -466,6 +431,20 @@ p, li { white-space: pre-wrap; }
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="walkmotor_backward_btn">
+            <property name="text">
+             <string>后退</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="walkmotor_forward_btn">
+            <property name="text">
+             <string>前进</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="3">
            <spacer name="horizontalSpacer_2">
@@ -483,10 +462,94 @@ p, li { white-space: pre-wrap; }
             </property>
            </spacer>
           </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="walkmotor_poweroff_btn">
+            <property name="text">
+             <string>下电</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="walkmotor_stop_btn">
+            <property name="text">
+             <string>停</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="walkmotor_poweron_btn">
+            <property name="text">
+             <string>上电</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item row="1" column="0">
          <layout class="QGridLayout" name="gridLayout_8">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_16">
+            <property name="text">
+             <string>位置:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLineEdit" name="walkmotor_realtime_speed_le">
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>到位</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="5">
+           <widget class="QLineEdit" name="walkmotor_inplace_le">
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="walkmotor_realtime_pos_le">
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="5">
+           <widget class="QPushButton" name="walkmotor_query_pos_btn">
+            <property name="text">
+             <string>查询位置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="label_17">
+            <property name="text">
+             <string>速度：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="5">
+           <widget class="QPushButton" name="walkmotor_query_velocity_btn">
+            <property name="text">
+             <string>速度查询</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2" colspan="2">
+           <widget class="QLineEdit" name="walkmotor_pos_le">
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QPushButton" name="walkmotor_set_pos_btn">
             <property name="text">
@@ -494,48 +557,31 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLineEdit" name="walkmotor_pos_le">
-            <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="walkmotor_query_pos_btn">
-            <property name="text">
-             <string>查询位置</string>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>  到位反馈</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="walkmotor_inplace_le"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="walkmotor_velocity_le">
-            <property name="text">
-             <string>1</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
            <widget class="QPushButton" name="walkmotor_set_velocity_btn">
             <property name="text">
              <string>设置速度</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="walkmotor_query_velocity_btn">
+          <item row="1" column="2" colspan="2">
+           <widget class="QLineEdit" name="walkmotor_velocity_le">
             <property name="text">
-             <string>速度查询</string>
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>mm/s</string>
             </property>
            </widget>
           </item>

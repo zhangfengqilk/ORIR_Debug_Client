@@ -7,6 +7,64 @@ from src.base import stopThreading
 import time
 # from src.uibasewindow.Ui_ORIR_Debug_Client import Ui_ORIR_Debug_Client
 
+# -----------------------------------------------------------------------------
+# import serial
+# def hex2b(hex):
+#     return bytes.fromhex(hex)
+# def b2hex(bytes):
+#     return bytes.hex()
+# def b2uint(bytes):
+#     return int.from_bytes(bytes, byteorder='big', signed=False)
+# def uint2b(num):
+#     return num.to_bytes(2, byteorder='big', signed=False)
+# def check_sum(data):
+#     sum = 0
+#     for i in data:
+#         sum = sum + i
+#     sum = bytes([uint2b(sum)[1]])
+#     return sum
+# def get_file_info(file_id):
+#     header = b'\xEB\x10'
+#     data = b'\x00\x01'+ uint2b(file_id)+b'\x00'*8
+#     sum = check_sum(data)
+#     return header + data + sum + b'\x90'
+# def parser_file_info(data):
+#     frame_sum = bytes([data[7],data[8]])
+#     file_size = bytes([data[9],data[10]])
+#     return b2uint(frame_sum), b2uint(file_size)
+# def get_file_frame(file_id, frame_id, file_size):
+#     header = b'\xEB\x81'
+#     data = b'\x00\x01' + uint2b(file_id) + uint2b(frame_id) + uint2b(file_size) + bytes([0])*4
+#     sum = check_sum(data)
+#     return header + data + sum + b'\x90'
+# def parser_file_frame(data):
+#     return data[8:254]
+# buff = bytes()
+# ser = serial.Serial("com4", 115200, timeout=0.5)
+# if ser:
+#     print('open com4')
+#     # 获取第一张图像
+#     file_id = 1
+#     ser.write(get_file_info(file_id))
+#     r = ser.read(16)
+#     frame_sum, file_size = parser_file_info(r)
+#     for i in range(frame_sum):
+#         ser.write(get_file_frame(file_id, i+1, file_size))
+#         r = ser.read(256)
+#         if len(r)==256:
+#             r = parser_file_frame(r)
+#             print('get frame %d success'%(i+1))
+#             buff = buff + r
+#         else:
+#             print('get frame %d failure'%(i+1))
+#     with open('test.jpg', 'wb') as f:
+#         f.write(buff)
+#     ser.close()
+# -----------------------------------------------------------------------------
+
+
+
+
 class TcpLogic():
     runinfo_signal = QtCore.Signal(str, bytes)
     recv_data_signal = QtCore.Signal(bytes)
@@ -112,13 +170,14 @@ class TcpLogic():
         while True:
             recv_msg = self.tcp_socket.recv(1024)
             if recv_msg:
-                msg = recv_msg.decode('utf-8')
+                msg = recv_msg#.decode('utf-8')
                 msg = '来自IP:{}端口:{}:\n{}\n'.format(address[0], address[1], msg)
                 self.runinfo_signal.emit(msg, None)
+                self.recv_data_signal.emit(recv_msg)
             else:
                 self.tcp_socket.close()
                 # self.reset()
-                self.runinfo_signal.emit('从服务器断开连接\n')
+                self.runinfo_signal.emit('从服务器断开连接\n', None)
                 break
 
     def tcp_send(self, data):
@@ -143,7 +202,7 @@ class TcpLogic():
                     # self.runinfo_signal.emit('TCP客户端已发送\n' + str(data))
                 return True
             except Exception as ret:
-                self.runinfo_signal.emit('发送失败\n')
+                self.runinfo_signal.emit('发送失败\n', None)
                 return False
 
     def tcp_close(self):

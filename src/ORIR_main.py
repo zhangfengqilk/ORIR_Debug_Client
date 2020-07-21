@@ -80,7 +80,7 @@ class ORIRMain(QFramelessWindow):
         reply = QMessageBox.question(self, 'Message', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         # 判断返回结果处理相应事项
         if reply == QMessageBox.Yes:
-            self.close_all()
+            self._debug_page.close_all()
             event.accept()
         else:
             event.ignore()
