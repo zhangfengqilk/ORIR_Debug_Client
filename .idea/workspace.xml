@@ -21,9 +21,6 @@
   <component name="ChangeListManager">
     <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="修改了通信协议 V0.3.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Page.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ORIR_Debug_Page.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -299,18 +296,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
-          <line>449</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/base/tcp_logic.py</url>
-          <line>171</line>
-          <option name="timeStamp" value="4" />
+          <line>515</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
-          <line>494</line>
-          <option name="timeStamp" value="5" />
+          <line>510</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
