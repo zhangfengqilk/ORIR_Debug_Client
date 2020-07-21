@@ -19,11 +19,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="">
+    <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="修改了通信协议 V0.3.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ORIR_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ORIR_main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/base/tcp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/tcp_logic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/base/udp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/udp_logic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_Page.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ORIR_Debug_Page.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" afterDir="false" />
@@ -297,12 +294,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
-          <line>427</line>
+          <line>429</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
-          <line>422</line>
+          <line>424</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -312,7 +309,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
-          <line>467</line>
+          <line>469</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>

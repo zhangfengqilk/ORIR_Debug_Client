@@ -11,6 +11,8 @@ import datetime
 import threading
 def b2uint(bytes):
     return int.from_bytes(bytes, byteorder='big', signed=False)
+def b2int(bytes):
+    return int.from_bytes(bytes, byteorder='big', signed=True)
 
 class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def __init__(self):
@@ -96,10 +98,10 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.walkmotor_set_velocity_btn.clicked.connect(self.walkmotor_set_velocity)
 
     def lifter_signal_connect(self):
-        self.lifter_up_btn.clicked.connect(self.lifter_up)
-        self.lifter_down_btn.clicked.connect(self.lifter_down)
-        self.lifter_stop_btn.clicked.connect(self.lifter_stop)
-        self.lifter_query_pos_btn.clicked.connect(self.lifter_query_pos)
+        self.lift_up_btn.clicked.connect(self.lifter_up)
+        self.lift_down_btn.clicked.connect(self.lifter_down)
+        self.lift_stop_btn.clicked.connect(self.lifter_stop)
+        self.lift_query_pos_btn.clicked.connect(self.lifter_query_pos)
 
     def statuslight_signal_connect(self):
         self.statuslight_red_on_btn.clicked.connect(self.statuslight_red_on)
@@ -282,11 +284,11 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.send_single_cmd(0x03, 0x01, 0x0a, '', '查询行走电机速度')
 
     def walkmotor_set_pos(self):
-        pos = int(float(self.walkmotor_pos_le.text()) * 100)
+        pos = int(float(self.walkmotor_pos_le.text()))
         self.send_single_cmd(0x03, 0x03, 0x06, pos, '设置行走电机位置')
 
     def walkmotor_set_velocity(self):
-        velocity = int(float(self.walkmotor_velocity_le.text()) * 100)
+        velocity = int(float(self.walkmotor_velocity_le.text()))
         self.send_single_cmd(0x03, 0x03, 0x09, velocity, '设置行走电机速度')
 
 ##----------------------升降杆指令-----------------------------------
@@ -424,7 +426,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
             if recvd_msg[tot_len - 1] == 0xFF:  # 帧尾
                 device_type = recvd_msg[4] # 设备类型
                 op_code = recvd_msg[5]  # 操作码
-                data = b2uint(bytes([frame[9], frame[8], frame[7], frame[6]]))
+                data = b2int(bytes([frame[9], frame[8], frame[7], frame[6]]))
                 # data = recvd_msg[6] * 256 * 256 * 256 + recvd_msg[7] * 256 * 256 + recvd_msg[8] * 256 + recvd_msg[9]
 
                 # 解析云台
@@ -465,11 +467,11 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
                 # 行走电机
                 if device_type == 0x03:
                     if op_code == 0x08:
-                        self.runinfo_signal.emit('行走电机位置： ' + str(float(data / 100)), None)
-                        self.walkmotor_realtime_pos_le.setText(str(float(data / 100)))
+                        self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
+                        self.walkmotor_realtime_pos_le.setText(str(data))
                     if op_code == 0x0B:
-                        self.runinfo_signal.emit('行走电机速度： ' + str(float(data / 100)), None)
-                        self.walkmotor_realtime_speed_le.setText(str(float(data / 100)))
+                        self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
+                        self.walkmotor_realtime_speed_le.setText(str(data))
                     if op_code == 0x0c:
                         self.is_walkmotor_inplace = True
                         self.walkmotor_inplace_le.setText('到位')
@@ -484,10 +486,13 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
                     if op_code == 0x04:
                         self.runinfo_signal.emit('升降杆到位', None)
                         self.is_lift_inplace = True
-                        self.lifter_inplace_le.setText('到位')
-                    if op_code == 0x06:
-                        self.runinfo_signal.emit('升降杆位置： ' + str(float(data / 100)), None)
-                        self.lifter_pos_le.setText(str(float(data / 100)))
+                        self.lift_inplace_le.setText('到位')
+                    if op_code == 0x08:
+                        self.runinfo_signal.emit('升降杆位置： ' + str(data), None)
+                        self.lift_pos_le.setText(str(data))
+                    if op_code == 0x0B:
+                        self.runinfo_signal.emit('升降杆速度： ' + str(data), None)
+                        self.lift_velocity_le.setText(str(data))
 
                 if device_type == 0x06:
                     if op_code == 0x01:
