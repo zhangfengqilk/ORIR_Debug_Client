@@ -906,7 +906,7 @@ p, li { white-space: pre-wrap; }
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QPushButton" name="set_pos_btn">
+           <widget class="QPushButton" name="lift_set_pos_btn">
             <property name="text">
              <string>设置位置</string>
             </property>

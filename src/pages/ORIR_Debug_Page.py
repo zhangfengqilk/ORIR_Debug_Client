@@ -98,10 +98,17 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.walkmotor_set_velocity_btn.clicked.connect(self.walkmotor_set_velocity)
 
     def lifter_signal_connect(self):
+        self.lift_poweron_btn.clicked.connect(self.lift_poweron)
+        self.lift_poweroff_btn.clicked.connect(self.lift_poweroff)
+
         self.lift_up_btn.clicked.connect(self.lifter_up)
         self.lift_down_btn.clicked.connect(self.lifter_down)
         self.lift_stop_btn.clicked.connect(self.lifter_stop)
+        self.lift_set_pos_btn.clicked.connect(self.lift_set_pos)
         self.lift_query_pos_btn.clicked.connect(self.lifter_query_pos)
+        self.lift_set_velocity_btn.clicked.connect(self.lift_set_velocity)
+        self.lift_query_velocity_btn.clicked.connect(self.lift_query_velocity)
+
 
     def statuslight_signal_connect(self):
         self.statuslight_red_on_btn.clicked.connect(self.statuslight_red_on)
@@ -263,14 +270,14 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def walkmotor_poweron(self):
         self.send_single_cmd(0x03, 0x01, 0x01, '', '行走电机上电')
 
+    def walkmotor_poweroff(self):
+        self.send_single_cmd(0x03, 0x01, 0x02, '', '行走电机下电')
+
     def walkmotor_backward(self):
         self.send_single_cmd(0x03, 0x01, 0x04, '', '行走电机后退')
 
     def walkmotor_forward(self):
         self.send_single_cmd(0x03, 0x01, 0x03, '', '行走电机前进')
-
-    def walkmotor_poweroff(self):
-        self.send_single_cmd(0x03, 0x01, 0x02, '', '行走电机下电')
 
     def walkmotor_stop(self):
         self.send_single_cmd(0x03, 0x01, 0x05, '', '行走电机停止')
@@ -292,21 +299,39 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.send_single_cmd(0x03, 0x03, 0x09, velocity, '设置行走电机速度')
 
 ##----------------------升降杆指令-----------------------------------
+    def lift_poweron(self):
+        self.send_single_cmd(0x05, 0x01, 0x01, '', '升降杆上电')
+
+    def lift_poweroff(self):
+        self.send_single_cmd(0x05, 0x01, 0x02, '', '升降杆下电')
+
     def lifter_up(self):
-        self.send_single_cmd(0x05, 0x01, 0x01, '', '升降杆上升')
-        self.lifter_inplace_le.setText('')
+        self.send_single_cmd(0x05, 0x01, 0x03, '', '升降杆上升')
+        self.lift_inplace_le.setText('')
         self.is_lift_inplace = True
 
     def lifter_down(self):
-        self.send_single_cmd(0x05, 0x01, 0x02, '', '升降杆下降')
-        self.lifter_inplace_le.setText('')
+        self.send_single_cmd(0x05, 0x01, 0x04, '', '升降杆下降')
+        self.lift_inplace_le.setText('')
         self.is_lift_inplace = True
 
     def lifter_stop(self):
-        self.send_single_cmd(0x05, 0x01, 0x03, '', '升降杆停止')
+        self.send_single_cmd(0x05, 0x01, 0x05, '', '升降杆停止')
+
+    def lift_set_pos(self):
+        pos = int(float(self.lift_pos_le.text()))
+        self.send_single_cmd(0x05, 0x03, 0x06, pos, '设置升降杆位置')
 
     def lifter_query_pos(self):
-        self.send_single_cmd(0x05, 0x01, 0x05, '', '查询升降杆位置')
+        self.send_single_cmd(0x05, 0x01, 0x07, '', '查询升降杆位置')
+
+
+    def lift_query_velocity(self):
+        self.send_single_cmd(0x05, 0x01, 0x0a, '', '查询升降杆速度')
+
+    def lift_set_velocity(self):
+        velocity = int(float(self.lift_velocity_le.text()))
+        self.send_single_cmd(0x05, 0x03, 0x09, velocity, '设置升降杆速度')
 
 #--------------------局放、条形码、霍尔、测距指令------------------------
     def partialdischarge_detect(self):
@@ -489,10 +514,10 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
                         self.lift_inplace_le.setText('到位')
                     if op_code == 0x08:
                         self.runinfo_signal.emit('升降杆位置： ' + str(data), None)
-                        self.lift_pos_le.setText(str(data))
+                        self.lift_realtime_pos_le.setText(str(data))
                     if op_code == 0x0B:
                         self.runinfo_signal.emit('升降杆速度： ' + str(data), None)
-                        self.lift_velocity_le.setText(str(data))
+                        self.lift_realtime_speed_le.setText(str(data))
 
                 if device_type == 0x06:
                     if op_code == 0x01:

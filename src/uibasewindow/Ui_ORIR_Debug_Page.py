@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ORIR_Debug_Page.ui',
 # licensing of 'ORIR_Debug_Page.ui' applies.
 #
-# Created: Tue Jul 21 12:42:08 2020
+# Created: Tue Jul 21 15:36:15 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -440,9 +440,9 @@ class Ui_ORIR_Debug_Page(object):
         self.label_23 = QtWidgets.QLabel(self.groupBox_4)
         self.label_23.setObjectName("label_23")
         self.gridLayout_10.addWidget(self.label_23, 2, 1, 1, 1)
-        self.set_pos_btn = QtWidgets.QPushButton(self.groupBox_4)
-        self.set_pos_btn.setObjectName("set_pos_btn")
-        self.gridLayout_10.addWidget(self.set_pos_btn, 3, 0, 1, 1)
+        self.lift_set_pos_btn = QtWidgets.QPushButton(self.groupBox_4)
+        self.lift_set_pos_btn.setObjectName("lift_set_pos_btn")
+        self.gridLayout_10.addWidget(self.lift_set_pos_btn, 3, 0, 1, 1)
         self.label_28 = QtWidgets.QLabel(self.groupBox_4)
         self.label_28.setObjectName("label_28")
         self.gridLayout_10.addWidget(self.label_28, 6, 0, 1, 1)
@@ -586,7 +586,7 @@ class Ui_ORIR_Debug_Page(object):
         self.label_25.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "mm/s", None, -1))
         self.lift_query_velocity_btn.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "速度查询", None, -1))
         self.label_23.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "    到位", None, -1))
-        self.set_pos_btn.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "设置位置", None, -1))
+        self.lift_set_pos_btn.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "设置位置", None, -1))
         self.label_28.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "   速度:", None, -1))
         self.lift_query_pos_btn.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "查询位置", None, -1))
         self.lift_realtime_speed_le.setText(QtWidgets.QApplication.translate("ORIR_Debug_Page", "0.0", None, -1))
