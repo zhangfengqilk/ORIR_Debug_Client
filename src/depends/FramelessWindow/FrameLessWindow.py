@@ -265,7 +265,8 @@ class QFramelessWindow(QWidget):
             self.showMaximized()  # 先实现窗口最大化
             self._m_maximum_btn.setText(b'\xef\x80\xb2'.decode("utf-8"))  # 更改按钮文本
             self._m_maximum_btn.setToolTip("恢复")  # 更改按钮提示
-            self._m_maximum_btn.disconnect()  # 断开原本的信号槽连接
+            self._m_maximum_btn.clicked.disconnect()  # pyside2只能用这种方法
+            # self._m_maximum_btn.disconnect()  # 断开原本的信号槽连接   pyqt5 中有效
             self._m_maximum_btn.clicked.connect(self._on_set_window_normal)  # 重新连接信号和槽
         except:
             pass
@@ -279,7 +280,8 @@ class QFramelessWindow(QWidget):
             self.showNormal()
             self._m_maximum_btn.setText(b'\xef\x80\xb1'.decode("utf-8"))
             self._m_maximum_btn.setToolTip("最大化")
-            self._m_maximum_btn.disconnect()
+            self._m_maximum_btn.clicked.disconnect()  # pyside2只能用这种方法
+            # self._m_maximum_btn.disconnect()    # pyqt5 中有效
             self._m_maximum_btn.clicked.connect(self._on_set_window_maximum)
         except:
             pass
