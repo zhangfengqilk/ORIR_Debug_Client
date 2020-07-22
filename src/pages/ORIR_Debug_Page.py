@@ -9,10 +9,7 @@ from src.base.udp_logic import UdpLogic
 import time
 import datetime
 import threading
-def b2uint(bytes):
-    return int.from_bytes(bytes, byteorder='big', signed=False)
-def b2int(bytes):
-    return int.from_bytes(bytes, byteorder='big', signed=True)
+from src.base.utils import *
 
 class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def __init__(self):
@@ -121,54 +118,54 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
     def clear_runinfo(self):
         self.runinfo_te.clear()
 
-    def byte2hex_str(self, byte_data):
-        """
-        将十六进制数据转为hex字符串，每个字节中间加入空格
-        :param byte_data:
-        :return:
-        """
-        hex_str = str(byte_data.hex())
-        hex_str = hex_str.upper()
-        hex_str_list = []
-        for i in range(0, len(hex_str) - 1, 2):
-            hex_str_list.append(hex_str[i:i+2])
-            hex_str_list.append(' ')
-
-        return ''.join(hex_str_list)
-
-    def int2hex_str(self, byte_len, data):
-        """
-        将某个整数转换为指定字节长度的十六进制字符串
-        如：整数12，转为 2个字节长度的十六进制字符串，为000c
-
-        :param byte_len:
-        :param data:
-        :return:
-        """
-        hex_str = hex(data)
-        hex_str = hex_str[2:]
-
-        if len(hex_str) % 2:
-            hex_str = '0' + hex_str
-
-        if len(hex_str) < byte_len * 2:
-            hex_str = '00' * int(byte_len - len(hex_str)/2) + hex_str
-        return hex_str
+    # def byte2hex_str(self, byte_data):
+    #     """
+    #     将十六进制数据转为hex字符串，每个字节中间加入空格
+    #     :param byte_data:
+    #     :return:
+    #     """
+    #     hex_str = str(byte_data.hex())
+    #     hex_str = hex_str.upper()
+    #     hex_str_list = []
+    #     for i in range(0, len(hex_str) - 1, 2):
+    #         hex_str_list.append(hex_str[i:i+2])
+    #         hex_str_list.append(' ')
+    #
+    #     return ''.join(hex_str_list)
+    #
+    # def int2hex_str(self, byte_len, data):
+    #     """
+    #     将某个整数转换为指定字节长度的十六进制字符串
+    #     如：整数12，转为 2个字节长度的十六进制字符串，为000c
+    #
+    #     :param byte_len:
+    #     :param data:
+    #     :return:
+    #     """
+    #     hex_str = hex(data)
+    #     hex_str = hex_str[2:]
+    #
+    #     if len(hex_str) % 2:
+    #         hex_str = '0' + hex_str
+    #
+    #     if len(hex_str) < byte_len * 2:
+    #         hex_str = '00' * int(byte_len - len(hex_str)/2) + hex_str
+    #     return hex_str
 
 
     def construct_cmd(self, device_type, data_len, opcode, data=''):
         cmd = bytearray()
         cmd += bytearray.fromhex('5aa5') # 帧头
-        cmd += bytearray.fromhex(self.int2hex_str(1, 12)) # 总长度
+        cmd += bytearray.fromhex(int2hex_str(1, 12)) # 总长度
         cmd += bytearray.fromhex('01')  # 地址
-        cmd += bytearray.fromhex(self.int2hex_str(1, device_type)) # 设备类型
+        cmd += bytearray.fromhex(int2hex_str(1, device_type)) # 设备类型
 
         # cmd += bytearray.fromhex(self.int2hex_str(2, data_len)) # 数据域长度
-        cmd += bytearray.fromhex(self.int2hex_str(1, opcode)) # 操作码
+        cmd += bytearray.fromhex(int2hex_str(1, opcode)) # 操作码
         if data:
-            cmd += bytearray.fromhex(self.int2hex_str(4, data))
+            cmd += bytearray.fromhex(int2hex_str(4, data))
         else:
-            cmd += bytearray.fromhex(self.int2hex_str(4, 0))
+            cmd += bytearray.fromhex(int2hex_str(4, 0))
         cmd += bytearray.fromhex('00')
         cmd += bytearray.fromhex('ff')
         return cmd
@@ -185,9 +182,9 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         cmd = self.construct_cmd(device_type, len, opcode, data)
         if self.send_data(cmd):
             if str(data):
-                run_msg = description  + '：' + str(data) + '：\n' + self.byte2hex_str(cmd) + '\n'
+                run_msg = description  + '：' + str(data) + '：\n' + byte2hex_str(cmd) + '\n'
             else:
-                run_msg = '发送' + description + '指令：\n' + self.byte2hex_str(cmd) + '\n'
+                run_msg = '发送' + description + '指令：\n' + byte2hex_str(cmd) + '\n'
             self.runinfo_signal.emit(run_msg, None)
 
 
@@ -430,7 +427,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.runinfo_te.insertPlainText(msg)
         if data:
             if self.is_show_as_hex_cb.isChecked():
-                self.runinfo_te.insertPlainText(self.byte2hex_str(data))
+                self.runinfo_te.insertPlainText(byte2hex_str(data))
             else:
                 try:
                     self.runinfo_te.insertPlainText(data.decode('utf-8'))

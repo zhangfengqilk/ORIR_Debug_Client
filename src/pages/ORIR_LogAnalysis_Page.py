@@ -9,16 +9,19 @@ import sys
 import socket
 from src.base.tcp_logic import TcpLogic
 from src.base.udp_logic import UdpLogic
+from src.base.tcp_client import TCP_Client
+from src.base.udp_server import UDP_Server
 import time
 import datetime
 import threading
+from src.base.utils import *
 
-class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TcpLogic, UdpLogic):
+class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server):
     def __init__(self):
         super(ORIR_LogAnalysis, self).__init__()
         Ui_ORIR_LogAnalysis_Page.__init__(self)
-        TcpLogic.__init__(self)
-        UdpLogic.__init__(self)
+        TCP_Client.__init__(self)
+        UDP_Server.__init__(self)
 
         self.setupUi(self)
         self.signal_connect()
@@ -29,7 +32,8 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TcpLogic, UdpLogic):
         self.tcp_connect_btn.clicked.connect(self.tcp_connect_net)
 
         self.runinfo_signal.connect(self.show_runinfo)
-        self.recv_data_signal.connect(self.show_runinfo)
+        # self.recv_data_signal.connect(self.show_runinfo)
+        self.send_debug_msg_btn.clicked.connect(self.send_debug_msg)
 
     def get_host_ip(self):
         """
@@ -48,7 +52,7 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TcpLogic, UdpLogic):
             self.udp_connect_btn.setText('UDP断开')
             self.runinfo_signal.emit('UDP连接成功\n', None)
         elif self.udp_connect_btn.text() == 'UDP断开':
-            self.udp_close()
+            self.udp_server_close()
             self.link = False
             self.udp_connect_btn.setText('UDP连接')
             self.runinfo_signal.emit('UDP 断开', None)
@@ -60,21 +64,75 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TcpLogic, UdpLogic):
             self.tcp_connect_btn.setText('TCP断开')
             self.runinfo_signal.emit('TCP连接成功\n', None)
         elif self.tcp_connect_btn.text() == 'TCP断开':
-            self.tcp_close()
+            self.tcp_client_close()
             self.link = False
-            self.net_connect_btn.setText('TCP连接')
+            self.tcp_connect_btn.setText('TCP连接')
             self.runinfo_signal.emit('TCP 断开', None)
 
     def show_runinfo(self, info, data=None):
-        msg = '[' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')  + '] '+ info
+        msg = '[{}] {}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f'), info)
+        # msg = '[' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + '] ' + info
         self.runinfo_te.insertPlainText(msg)
         if data:
             if self.is_show_as_hex_cb.isChecked():
-                self.runinfo_te.insertPlainText(self.byte2hex_str(data))
+                self.runinfo_te.insertPlainText(byte2hex_str(data))
             else:
                 try:
-                    self.runinfo_te.insertPlainText(data.decode('utf-8'))
+                    self.runinfo_te.insertPlainText(data.decode('utf-8', errors='ignore'))
                 except:
                     self.runinfo_te.insertPlainText('无法正确显示，请尝试使用十六进制显示')
+
         self.runinfo_te.insertPlainText('\n\n')
         self.runinfo_te.moveCursor(QTextCursor.End)
+
+    def send_debug_msg(self):
+        msg = str(self.send_debug_msg_te.toPlainText())
+        self.runinfo_signal.emit('发送：' + msg + '\n', None)
+        # print('msg1: ', msg, type(msg))
+
+        # 判断是否为16进制发送，如果是则转为16进制，否则编码为utf-8
+        if self.send_hex_data_cb.isChecked():
+            msg = msg.replace(' ', '')
+            if len(msg) % 2:
+                msg = msg[0: -1] + '0' + msg[-1]
+            try:
+                msg = bytes.fromhex(msg)
+            except:
+                msg = bytes(msg, encoding='utf-8')
+                # self.runinfo_signal.emit('无法将发送数据已十六进制发送', None)
+        else:
+            msg = msg.encode('utf-8')
+
+        # 判断是否为循环发送，如果时间框里有时间，则为循环发送
+        if self.send_debug_msg_btn.text() == '发送':
+            self.send_period = int(self.cycle_send_period_ms_le.text())
+            if self.send_period == 0:
+                self.tcp_client_send(msg)
+            else:   # 开启循环发送线程
+                self.is_cycle_send = True
+                self.send_debug_msg_btn.setText('停止')
+                thd = threading.Thread(target=self.cycle_send)
+                thd.start()
+
+        elif self.send_debug_msg_btn.text() == '停止':
+            self.send_debug_msg_btn.setText('发送')
+            self.is_cycle_send = False
+
+    def cycle_send(self):
+        while self.is_cycle_send:
+            msg = str(self.send_debug_msg_te.toPlainText())
+            self.runinfo_signal.emit('发送：' + msg + '\n', None)
+            # print('msg1: ', msg, type(msg))
+            if self.send_hex_data_cb.isChecked():
+                msg = msg.replace(' ', '')
+                if len(msg) % 2:
+                    msg = msg[0: -1] + '0' + msg[-1]
+                try:
+                    msg = bytes.fromhex(msg)
+                except:
+                    msg = bytes(msg, encoding='utf-8')
+            else:
+                msg = msg.encode('utf-8')
+
+            self.tcp_client_send(msg)
+            time.sleep(self.send_period / 1000)
