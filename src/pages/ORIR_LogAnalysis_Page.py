@@ -5,16 +5,15 @@ from src.uibasewindow.Ui_ORIR_Debug_Page import Ui_ORIR_Debug_Page
 from PySide2.QtWidgets import QWidget,QFileDialog
 from PySide2.QtWidgets import QApplication, QWidget, QListView, QMessageBox
 from PySide2.QtGui import QTextCursor
-import sys
+
 import socket
-from src.base.tcp_logic import TcpLogic
-from src.base.udp_logic import UdpLogic
 from src.base.tcp_client import TCP_Client
 from src.base.udp_server import UDP_Server
 import time
 import datetime
 import threading
 from src.base.utils import *
+
 
 class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server):
     def __init__(self):
@@ -43,6 +42,7 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
         self.tag_cbb.currentTextChanged.connect(self.set_log_tag)
         self.keyword_le.editingFinished.connect(self.set_log_keyword)
 
+        self.clear_runinfo_btn.clicked.connect(self.clear_runinfo)
 
     def get_host_ip(self):
         """
@@ -185,3 +185,5 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
             self.runinfo_signal.emit('清除日志关键字', None)
         else:
             self.runinfo_signal.emit('设置日志关键字为：{}'.format(keyword), None)
+    def clear_runinfo(self):
+        self.runinfo_te.clear()

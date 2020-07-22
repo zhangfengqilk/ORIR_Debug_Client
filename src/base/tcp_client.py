@@ -96,3 +96,4 @@ class TCP_Client:
         except Exception:
             pass
         self.link = False
+

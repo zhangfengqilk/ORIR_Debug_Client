@@ -1,22 +1,27 @@
 from src.uibasewindow.Ui_ORIR_Debug_Page import Ui_ORIR_Debug_Page
-from PySide2.QtWidgets import QWidget,QFileDialog
 from PySide2.QtWidgets import QApplication, QWidget, QListView, QMessageBox
 from PySide2.QtGui import QTextCursor
 import sys
 import socket
-from src.base.tcp_logic import TcpLogic
-from src.base.udp_logic import UdpLogic
+from src.base.tcp_server import TCP_Server
+from src.base.udp_server import UDP_Server
+from src.base.tcp_client import TCP_Client
+from src.base.udp_client import UDP_Client
+
 import time
 import datetime
 import threading
 from src.base.utils import *
 
-class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
+
+class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server, UDP_Client):
     def __init__(self):
         super(ORIR_Debug, self).__init__()
         Ui_ORIR_Debug_Page.__init__(self)
-        TcpLogic.__init__(self)
-        UdpLogic.__init__(self)
+        TCP_Server.__init__(self)
+        UDP_Server.__init__(self)
+        TCP_Client.__init__(self)
+        UDP_Client.__init__(self)
 
         self.setupUi(self)
         self.link = False
@@ -53,8 +58,6 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.hall_query_position_btn.clicked.connect(self.hall_query_position)
         self.ranging_query_position_btn.clicked.connect(self.ranging_query_position)
         self.statuslight_signal_connect()
-
-
 
     def ptz_signal_connect(self):
         self.ptz_poweron_btn.clicked.connect(self.ptz_poweron)
@@ -113,45 +116,8 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         self.statuslight_yellow_on_btn.clicked.connect(self.statuslight_yellow_on)
         self.statuslight_all_off_btn.clicked.connect(self.statuslight_all_off)
 
-
-
     def clear_runinfo(self):
         self.runinfo_te.clear()
-
-    # def byte2hex_str(self, byte_data):
-    #     """
-    #     将十六进制数据转为hex字符串，每个字节中间加入空格
-    #     :param byte_data:
-    #     :return:
-    #     """
-    #     hex_str = str(byte_data.hex())
-    #     hex_str = hex_str.upper()
-    #     hex_str_list = []
-    #     for i in range(0, len(hex_str) - 1, 2):
-    #         hex_str_list.append(hex_str[i:i+2])
-    #         hex_str_list.append(' ')
-    #
-    #     return ''.join(hex_str_list)
-    #
-    # def int2hex_str(self, byte_len, data):
-    #     """
-    #     将某个整数转换为指定字节长度的十六进制字符串
-    #     如：整数12，转为 2个字节长度的十六进制字符串，为000c
-    #
-    #     :param byte_len:
-    #     :param data:
-    #     :return:
-    #     """
-    #     hex_str = hex(data)
-    #     hex_str = hex_str[2:]
-    #
-    #     if len(hex_str) % 2:
-    #         hex_str = '0' + hex_str
-    #
-    #     if len(hex_str) < byte_len * 2:
-    #         hex_str = '00' * int(byte_len - len(hex_str)/2) + hex_str
-    #     return hex_str
-
 
     def construct_cmd(self, device_type, data_len, opcode, data=''):
         cmd = bytearray()
@@ -379,12 +345,15 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
             self.net_connect_btn.setText('连接')
 
     def close_all(self):
-        if self.net_type_cbb.currentIndex() in [0, 1]:
-            self.tcp_close()
+        if self.net_type_cbb.currentIndex() == 0:
+            self.tcp_server_close()
             self.client_socket_list.clear()
-        elif self.net_type_cbb.currentIndex() in [2, 3]:
-            self.udp_close()
-
+        elif self.net_type_cbb.currentText() == 1:
+            self.tcp_client_close()
+        elif self.net_type_cbb.currentIndex() == 2:
+            self.udp_server_close()
+        elif self.net_type_cbb.currentText() == 3:
+            self.udp_client_close()
 
     # def closeEvent(self, event):
     #     # message为窗口标题
@@ -415,11 +384,17 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         :param data:
         :return:
         """
-        if self.net_type_cbb.currentIndex() in [0, 1]:
-            if self.tcp_send(data):
+        if self.net_type_cbb.currentIndex() == 0:
+            if self.tcp_server_send(data):
                 return True
-        elif self.net_type_cbb.currentIndex() in [2, 3]:
-            if self.udp_send(data):
+        elif self.net_type_cbb.currentIndex() == 1:
+            if self.tcp_client_send(data):
+                return True
+        elif self.net_type_cbb.currentIndex() == 2:
+            if self.udp_server_send(data):
+                return True
+        elif self.net_type_cbb.currentIndex() == 3:
+            if self.udp_client_send(data):
                 return True
 
     def show_runinfo(self, info, data=None):
@@ -545,19 +520,25 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
         msg = str(self.send_debug_msg_te.toPlainText())
         self.runinfo_signal.emit('发送：' + msg + '\n', None)
         # print('msg1: ', msg, type(msg))
+
+        # 判断是否为16进制发送，如果是则转为16进制，否则编码为utf-8
         if self.send_hex_data_cb.isChecked():
             msg = msg.replace(' ', '')
             if len(msg) % 2:
                 msg = msg[0: -1] + '0' + msg[-1]
-            msg = bytearray.fromhex(msg)
+            try:
+                msg = bytes.fromhex(msg)
+            except:
+                msg = bytes(msg, encoding='utf-8')
         else:
             msg = msg.encode('utf-8')
 
+        # 判断是否为循环发送，如果时间框里有时间，则为循环发送
         if self.send_debug_msg_btn.text() == '发送':
             self.send_period = int(self.cycle_send_period_ms_le.text())
             if self.send_period == 0:
                 self.send_data(msg)
-            else:
+            else:   # 开启循环发送线程
                 self.is_cycle_send = True
                 self.send_debug_msg_btn.setText('停止')
                 thd = threading.Thread(target=self.cycle_send)
@@ -568,7 +549,6 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
             self.is_cycle_send = False
 
     def cycle_send(self):
-
         while self.is_cycle_send:
             msg = str(self.send_debug_msg_te.toPlainText())
             self.runinfo_signal.emit('发送：' + msg + '\n', None)
@@ -577,7 +557,10 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TcpLogic, UdpLogic):
                 msg = msg.replace(' ', '')
                 if len(msg) % 2:
                     msg = msg[0: -1] + '0' + msg[-1]
-                msg = bytearray.fromhex(msg)
+                try:
+                    msg = bytes.fromhex(msg)
+                except:
+                    msg = bytes(msg, encoding='utf-8')
             else:
                 msg = msg.encode('utf-8')
 
