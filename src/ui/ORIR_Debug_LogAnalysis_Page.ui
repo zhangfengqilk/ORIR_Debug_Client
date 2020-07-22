@@ -125,25 +125,40 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="net_type_cbb_2">
+           <widget class="QComboBox" name="level_cbb">
             <item>
              <property name="text">
-              <string>TCP服务器</string>
+              <string>assert</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>TCP客户端</string>
+              <string>error</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>UDP服务器</string>
+              <string>warning</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>UDP客户端</string>
+              <string>info</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>debug</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>alloff</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>allon</string>
              </property>
             </item>
            </widget>
@@ -156,25 +171,15 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="net_type_cbb_3">
+           <widget class="QComboBox" name="tag_cbb">
             <item>
              <property name="text">
-              <string>TCP服务器</string>
+              <string>清除标签</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>TCP客户端</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>UDP服务器</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>UDP客户端</string>
+              <string>main</string>
              </property>
             </item>
            </widget>
@@ -187,7 +192,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="lifter_pos_le_2"/>
+           <widget class="QLineEdit" name="keyword_le"/>
           </item>
          </layout>
         </item>

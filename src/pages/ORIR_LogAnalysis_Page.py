@@ -23,8 +23,13 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
         TCP_Client.__init__(self)
         UDP_Server.__init__(self)
 
+
+
         self.setupUi(self)
         self.signal_connect()
+
+        self.level_cbb.setView(QListView())
+        self.tag_cbb.setView(QListView())
 
     def signal_connect(self):
         self.get_local_ip_btn.clicked.connect(self.get_host_ip)
@@ -34,6 +39,10 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
         self.runinfo_signal.connect(self.show_runinfo)
         # self.recv_data_signal.connect(self.show_runinfo)
         self.send_debug_msg_btn.clicked.connect(self.send_debug_msg)
+        self.level_cbb.currentTextChanged.connect(self.set_log_level)
+        self.tag_cbb.currentTextChanged.connect(self.set_log_tag)
+        self.keyword_le.editingFinished.connect(self.set_log_keyword)
+
 
     def get_host_ip(self):
         """
@@ -136,3 +145,43 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
 
             self.tcp_client_send(msg)
             time.sleep(self.send_period / 1000)
+
+    def set_log_level(self, level):
+        if not self.link:
+            self.runinfo_signal.emit('请先连接网络！', None)
+            return
+
+        self.tcp_client_send('ulog level {}'.format(level).encode('utf-8'))
+
+        if level == 'allon':
+            self.runinfo_signal.emit('打开所有等级', None)
+        elif level == 'alloff':
+            self.runinfo_signal.emit('关闭所有等级', None)
+        else:
+            self.runinfo_signal.emit('设置日志级别为：{}'.format(level), None)
+
+    def set_log_tag(self, tag):
+        if not self.link:
+            self.runinfo_signal.emit('请先连接网络！', None)
+            return
+
+        if tag == '清除标签':
+            tag = ''
+        self.tcp_client_send('ulog tag {}'.format(tag).encode('utf-8'))
+        if tag:
+            self.runinfo_signal.emit('设置日志标签为：{}'.format(tag), None)
+        else:
+            self.runinfo_signal.emit('清除日志标签', None)
+
+    def set_log_keyword(self):
+        if not self.link:
+            self.runinfo_signal.emit('请先连接网络！', None)
+            return
+
+        keyword = self.keyword_le.text()
+        self.tcp_client_send('ulog keyword {}'.format(keyword).encode('utf-8'))
+
+        if not keyword:
+            self.runinfo_signal.emit('清除日志关键字', None)
+        else:
+            self.runinfo_signal.emit('设置日志关键字为：{}'.format(keyword), None)
