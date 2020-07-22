@@ -21,6 +21,14 @@
   <component name="ChangeListManager">
     <list default="true" id="cd568d14-d845-4faf-8f01-76e75741b2f1" name="默认更改列表" comment="修改了通信协议 V0.3.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/base/udp_logic.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/base/udp_logic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/ORIR_LogAnalysis_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/ORIR_LogAnalysis_Page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ui/ORIR_Debug_LogAnalysis_Page.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/ui/ORIR_Debug_LogAnalysis_Page.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Client.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Collectiong_Data_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Collectiong_Data_Page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_LogAnalysis_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_LogAnalysis_Page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/uibasewindow/Ui_ORIR_Debug_Page.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uibasewindow/Ui_main.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -300,9 +308,9 @@
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/pages/ORIR_Debug_Page.py</url>
-          <line>510</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/src/base/udp_logic.py</url>
+          <line>76</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

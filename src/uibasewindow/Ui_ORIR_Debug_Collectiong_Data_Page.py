@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ORIR_Debug_Collectiong_Data_Page.ui',
 # licensing of 'ORIR_Debug_Collectiong_Data_Page.ui' applies.
 #
-# Created: Thu Jul  9 17:18:14 2020
+# Created: Wed Jul 22 11:39:49 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!

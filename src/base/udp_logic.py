@@ -120,20 +120,13 @@ class UdpLogic():
         功能函数，关闭网络连接的方法
         :return:
         """
-        if self.net_type_cbb.currentIndex() == 2:
-            try:
-                self.udp_socket.close()
-                if self.link is True:
-                    self.runinfo_signal.emit('已断开网络\n', None)
-            except Exception as ret:
-                pass
-        if self.net_type_cbb.currentIndex() == 3:
-            try:
-                self.udp_socket.close()
-                if self.link is True:
-                    self.runinfo_signal.emit('已断开网络\n', None)
-            except Exception as ret:
-                pass
+        try:
+            self.udp_socket.close()
+            if self.link is True:
+                self.runinfo_signal.emit('已断开网络\n', None)
+        except Exception as ret:
+            pass
+
         try:
             stopThreading.stop_thread(self.sever_th)
         except Exception:

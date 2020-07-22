@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ORIR_Debug_Page.ui',
 # licensing of 'ORIR_Debug_Page.ui' applies.
 #
-# Created: Tue Jul 21 15:36:15 2020
+# Created: Wed Jul 22 11:18:47 2020
 #      by: pyside2-uic  running on PySide2 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
