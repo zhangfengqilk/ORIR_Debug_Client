@@ -97,7 +97,7 @@ if __name__ == "__main__":
     window.add_minimum_button()
     window.set_status_text()
 
-    window.set_window_title('挂轨机器人调试上位机 V0.3.2 2020-05-25 by Yi')
+    window.set_window_title('挂轨机器人调试上位机 V0.5.0 2020-07-22 by Yi')
     # window.set_window_title_height(40)
     window.show()
     sys.exit(app.exec_())

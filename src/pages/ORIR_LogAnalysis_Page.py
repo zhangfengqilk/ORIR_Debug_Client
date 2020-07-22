@@ -22,8 +22,6 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
         TCP_Client.__init__(self)
         UDP_Server.__init__(self)
 
-
-
         self.setupUi(self)
         self.signal_connect()
 
