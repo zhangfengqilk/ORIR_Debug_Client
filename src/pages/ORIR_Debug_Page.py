@@ -474,6 +474,13 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
                     if op_code == 0x02:
                         self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
                         self.partialdischarge_result_le.setText(str(float(data / 100)))
+
+                # 测距（测高度）
+                if device_type == 0x08:
+                    if op_code == 0x02:
+                        distance = data
+                        self.runinfo_signal.emit('测距结果值： ' + str(float(data)), None)
+                        self.ranging_cur_position_le.setText(str(float(distance)))
                 # 行走电机
                 if device_type == 0x03:
                     if op_code == 0x08:
