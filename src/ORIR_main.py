@@ -35,7 +35,6 @@ class ORIRMain(QFramelessWindow):
         self._help_page = ORIR_Help()
         self._m_stacked_widget.addWidget(self._help_page)
 
-
         self._m_navigation_bar.itemClicked.connect(self._on_change_page)
         # self.set_window_icon('../resources/icons/battery.ico')
         self.setWindowFlags(Qt.FramelessWindowHint or Qt.WindowSystemMenuHint or Qt.WindowMinMaxButtonsHint)

@@ -1,0 +1,1 @@
+pyinstaller  ./src/ORIR_main.py -D -w

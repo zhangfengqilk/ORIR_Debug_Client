@@ -30,7 +30,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.send_period = 0
         self.is_cycle_send = False
         self.net_type_cbb.setView(QListView())
-
+        self.recv_data_buf = [] # 缓存从底层收到的数据，用于解析帧
         # 标志位
         self.is_ptz_bearing_inplace = False
         self.is_ptz_pitching_inplace = False
@@ -411,109 +411,131 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.runinfo_te.insertPlainText('\n\n')
         self.runinfo_te.moveCursor(QTextCursor.End)
 
+    def parse_one_frm(self, recvd_msg):
+        """
+        解析一个单独的帧
+        """
+        device_type = recvd_msg[4]  # 设备类型
+        op_code = recvd_msg[5]  # 操作码
+        # data = b2int(bytes([frame[9], frame[8], frame[7], frame[6]]))
+        data = recvd_msg[9] * 256 * 256 * 256 + recvd_msg[8] * 256 * 256 + recvd_msg[7] * 256 + recvd_msg[6]
+
+        # 解析云台
+        if device_type == 0x01:
+            if op_code == 0x0F:
+                self.runinfo_signal.emit('方位到位', None)
+                if self.is_ptz_pitching_inplace:
+                    self.ptz_inplace_le.setText('方位俯仰到位')
+                else:
+                    self.ptz_inplace_le.setText('方位到位')
+                self.is_ptz_bearing_inplace = True
+            if op_code == 0x10:
+                self.runinfo_signal.emit('俯仰到位', None)
+                if self.is_ptz_bearing_inplace:
+                    self.ptz_inplace_le.setText('方位俯仰到位')
+                else:
+                    self.ptz_inplace_le.setText('俯仰到位')
+                self.is_ptz_pitching_inplace = True
+
+            if op_code == 0x11:
+                bearing = data
+                self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
+                self.ptz_bearing_le.setText(str(float(bearing / 100)))
+            if op_code == 0x12:
+                pitching = data
+                self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
+                self.ptz_pitching_le.setText(str(float(pitching / 100)))
+
+            if op_code == 0x13:
+                velocity = data
+                self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
+                self.ptz_velocity_le.setText(str(float(velocity / 100)))
+        # 局放
+        if device_type == 0x02:
+            if op_code == 0x02:
+                self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
+                self.partialdischarge_result_le.setText(str(float(data / 100)))
+        # 行走电机
+        if device_type == 0x03:
+            if op_code == 0x08:
+                self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
+                self.walkmotor_realtime_pos_le.setText(str(data))
+            if op_code == 0x0B:
+                self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
+                self.walkmotor_realtime_speed_le.setText(str(data))
+            if op_code == 0x0c:
+                self.is_walkmotor_inplace = True
+                self.walkmotor_inplace_le.setText('到位')
+
+        if device_type == 0x04:
+            if op_code == 0x02:
+                self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
+                self.barcode_position_le.setText(str(float(data / 100)))
+
+        if device_type == 0x05:
+            if op_code == 0x04:
+                self.runinfo_signal.emit('升降杆到位', None)
+                self.is_lift_inplace = True
+                self.lift_inplace_le.setText('到位')
+            if op_code == 0x08:
+                self.runinfo_signal.emit('升降杆位置： ' + str(data), None)
+                self.lift_realtime_pos_le.setText(str(data))
+            if op_code == 0x0B:
+                self.runinfo_signal.emit('升降杆速度： ' + str(data), None)
+                self.lift_realtime_speed_le.setText(str(data))
+
+        if device_type == 0x06:
+            if op_code == 0x01:
+                if data & 0x01:
+                    self.runinfo_signal.emit('光电开关1 开启', None)
+                    self.photoelectricswitch_1_le.setText('On')
+                else:
+                    self.photoelectricswitch_1_le.setText('Off')
+                if data & 0x02:
+                    self.runinfo_signal.emit('光电开关2 开启', None)
+                if data & 0x04:
+                    self.runinfo_signal.emit('光电开关3 开启', None)
+                if data & 0x08:
+                    self.runinfo_signal.emit('光电开关4 开启', None)
+                if data & 0x10:
+                    self.runinfo_signal.emit('光电开关5 开启', None)
+                if data & 0x20:
+                    self.runinfo_signal.emit('光电开关6 开启', None)
+                if data == 0x00:
+                    self.runinfo_signal.emit('光电开关关闭', None)
+
+        if device_type == 0x07:
+            if op_code == 0x02:
+                self.runinfo_signal.emit('霍尔结果值： ' + str(float(data / 100)), None)
+        if device_type == 0x08:
+            if op_code == 0x02:
+                self.runinfo_signal.emit('测距结果值： ' + str(float(data / 100)), None)
+
+    pass
+
     def parse_recv_data(self, frame):
         """
         从底层ARM板 接收到的消息，在此解析
         :param data:
         :return:
         """
+        frm_len = 12  # 固定帧长度
         recvd_msg = list(frame)
-        if recvd_msg[0] == 0x5A and recvd_msg[1] == 0xA5: # 接收到帧头
-            tot_len = recvd_msg[2]  # 取出长度
-            if recvd_msg[tot_len - 1] == 0xFF:  # 帧尾
-                device_type = recvd_msg[4] # 设备类型
-                op_code = recvd_msg[5]  # 操作码
-                data = b2int(bytes([frame[9], frame[8], frame[7], frame[6]]))
-                # data = recvd_msg[6] * 256 * 256 * 256 + recvd_msg[7] * 256 * 256 + recvd_msg[8] * 256 + recvd_msg[9]
-
-                # 解析云台
-                if device_type == 0x01:
-                    if op_code == 0x0F:
-                        self.runinfo_signal.emit('方位到位', None)
-                        if self.is_ptz_pitching_inplace:
-                            self.ptz_inplace_le.setText('方位俯仰到位')
-                        else:
-                            self.ptz_inplace_le.setText('方位到位')
-                        self.is_ptz_bearing_inplace = True
-                    if op_code == 0x10:
-                        self.runinfo_signal.emit('俯仰到位', None)
-                        if self.is_ptz_bearing_inplace:
-                            self.ptz_inplace_le.setText('方位俯仰到位')
-                        else:
-                            self.ptz_inplace_le.setText('俯仰到位')
-                        self.is_ptz_pitching_inplace = True
-
-                    if op_code == 0x11:
-                        bearing = data
-                        self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
-                        self.ptz_bearing_le.setText(str(float(bearing / 100)))
-                    if op_code == 0x12:
-                        pitching = data
-                        self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
-                        self.ptz_pitching_le.setText(str(float(pitching / 100)))
-
-                    if op_code == 0x13:
-                        velocity = data
-                        self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
-                        self.ptz_velocity_le.setText(str(float(velocity / 100)))
-                # 局放
-                if device_type == 0x02:
-                    if op_code == 0x02:
-                        self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
-                        self.partialdischarge_result_le.setText(str(float(data / 100)))
-                # 行走电机
-                if device_type == 0x03:
-                    if op_code == 0x08:
-                        self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
-                        self.walkmotor_realtime_pos_le.setText(str(data))
-                    if op_code == 0x0B:
-                        self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
-                        self.walkmotor_realtime_speed_le.setText(str(data))
-                    if op_code == 0x0c:
-                        self.is_walkmotor_inplace = True
-                        self.walkmotor_inplace_le.setText('到位')
-
-                if device_type == 0x04:
-                    if op_code == 0x02:
-                        self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
-                        self.barcode_position_le.setText(str(float(data / 100)))
-
-
-                if device_type == 0x05:
-                    if op_code == 0x04:
-                        self.runinfo_signal.emit('升降杆到位', None)
-                        self.is_lift_inplace = True
-                        self.lift_inplace_le.setText('到位')
-                    if op_code == 0x08:
-                        self.runinfo_signal.emit('升降杆位置： ' + str(data), None)
-                        self.lift_realtime_pos_le.setText(str(data))
-                    if op_code == 0x0B:
-                        self.runinfo_signal.emit('升降杆速度： ' + str(data), None)
-                        self.lift_realtime_speed_le.setText(str(data))
-
-                if device_type == 0x06:
-                    if op_code == 0x01:
-                        if data & 0x01:
-                            self.runinfo_signal.emit('光电开关1 开启', None)
-                        if data & 0x02:
-                            self.runinfo_signal.emit('光电开关2 开启', None)
-                        if data & 0x04:
-                            self.runinfo_signal.emit('光电开关3 开启', None)
-                        if data & 0x08:
-                            self.runinfo_signal.emit('光电开关4 开启', None)
-                        if data & 0x10:
-                            self.runinfo_signal.emit('光电开关5 开启', None)
-                        if data & 0x20:
-                            self.runinfo_signal.emit('光电开关6 开启', None)
-                        if data == 0x00:
-                            self.runinfo_signal.emit('光电开关关闭', None)
-
-                if device_type == 0x07:
-                    if op_code == 0x02:
-                        self.runinfo_signal.emit('霍尔结果值： ' + str(float(data / 100)), None)
-                if device_type == 0x08:
-                    if op_code == 0x02:
-                        self.runinfo_signal.emit('测距结果值： ' + str(float(data / 100)), None)
+        self.recv_data_buf += recvd_msg # 插入缓存底部
+        # 循环，从缓存中查找帧头
+        i = 0
+        while i <= (len(self.recv_data_buf) - frm_len):
+            if self.recv_data_buf[i] == 0x5A and self.recv_data_buf[i + 1] == 0xA5:  # 找到帧头
+                if self.recv_data_buf[i + frm_len - 1] == 0xFF:  # 找到帧尾
+                    self.parse_one_frm(self.recv_data_buf[i : i+frm_len])
+                    del(self.recv_data_buf[i : i+frm_len])
+                    i = 0
+                else:
+                    del (self.recv_data_buf[i])
+                    i = 0
+            else:
+                del(self.recv_data_buf[i])
+                i = 0
 
 
     def send_debug_msg(self):

@@ -7,7 +7,7 @@ from src.base import stopThreading
 import time
 # from src.uibasewindow.Ui_ORIR_Debug_Client import Ui_ORIR_Debug_Client
 
-
+# 遗弃，不再使用
 
 
 class TcpLogic():

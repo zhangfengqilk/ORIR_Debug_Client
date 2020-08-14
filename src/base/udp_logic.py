@@ -5,7 +5,7 @@ from src.base import stopThreading
 import socket
 import threading
 import sys
-
+# 遗弃，不再使用
 class AbstractNet(QObject):
     runinfo_signal = QtCore.Signal(str)
     recv_data_signal = QtCore.Signal(str)
