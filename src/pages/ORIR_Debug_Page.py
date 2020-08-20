@@ -68,10 +68,6 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.ptz_vlup_btn.clicked.connect(self.ptz_vl_up)
         self.ptz_left_btn.clicked.connect(self.ptz_left)
         self.ptz_right_btn.clicked.connect(self.ptz_right)
-        self.ptz_leftup_btn.clicked.connect(self.ptz_leftup)
-        self.ptz_leftdown_btn.clicked.connect(self.ptz_leftdown)
-        self.ptz_rightup_btn.clicked.connect(self.ptz_rightup)
-        self.ptz_rightdown_btn.clicked.connect(self.ptz_rightdown)
         self.ptz_stop_btn.clicked.connect(self.ptz_stop)
 
         self.ptz_set_bearing_btn.clicked.connect(self.ptz_set_bearing)
@@ -84,8 +80,6 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.ptz_query_right_tilt_btn.clicked.connect(self.ptz_query_right_tilt)
         self.ptz_self_check_btn.clicked.connect(self.ptz_self_check)
 
-        self.ptz_set_velocity_btn.clicked.connect(self.ptz_set_velocity)
-        self.ptz_query_velocity_btn.clicked.connect(self.ptz_query_velocity)
         self.ptz_set_zero_position_btn.clicked.connect(self.ptz_set_zero_position)
 
     def debug_signal_connect(self):
@@ -237,15 +231,6 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.ptz_query_left_tilt()
         self.ptz_query_right_tilt()
 
-    def ptz_set_velocity(self):
-        velocity = int(float(self.ptz_velocity_le.text()) * 100)
-        self.send_single_cmd(0x01, 0x03, 0x0b, velocity, '设置云台速度')
-
-    def ptz_query_velocity(self):
-        self.send_single_cmd(0x01, 0x01, 0x0c, '', '查询云台速度')
-
-    def ptz_set_zero_position(self):
-        self.send_single_cmd(0x01, 0x01, 0x03, '', '校正云台')
 
 ##--------------------------行走电机指令--------------------------
 
