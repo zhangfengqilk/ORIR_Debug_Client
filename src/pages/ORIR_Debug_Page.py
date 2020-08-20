@@ -48,16 +48,18 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.recv_data_signal.connect(self.parse_recv_data)
         self.send_debug_msg_btn.clicked.connect(self.send_debug_msg)
 
-        self.ptz_signal_connect()
-        self.debug_signal_connect()
-        self.walkmotor_signal_connect()
-        self.lifter_signal_connect()
+        self.ptz_signal_connect()           # 云台
+        self.debug_signal_connect()         # 调试信息
+        self.walkmotor_signal_connect()     # 行走电机
+        self.lifter_signal_connect()        # 升降电机
+        self.pd_signal_connect()            # 局放控制的信号绑定
+        self.statuslight_signal_connect()   # 状态灯
 
-        self.partialdischarge_detect_btn.clicked.connect(self.partialdischarge_detect)
+        # 其他部分
         self.barcode_query_position_btn.clicked.connect(self.barcode_query_position)
         self.hall_query_position_btn.clicked.connect(self.hall_query_position)
         self.ranging_query_position_btn.clicked.connect(self.ranging_query_position)
-        self.statuslight_signal_connect()
+
 
     def ptz_signal_connect(self):
         self.ptz_poweron_btn.clicked.connect(self.ptz_poweron)
@@ -108,12 +110,26 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.lift_set_velocity_btn.clicked.connect(self.lift_set_velocity)
         self.lift_query_velocity_btn.clicked.connect(self.lift_query_velocity)
 
-
     def statuslight_signal_connect(self):
         self.statuslight_red_on_btn.clicked.connect(self.statuslight_red_on)
         self.statuslight_green_on_btn.clicked.connect(self.statuslight_green_on)
         self.statuslight_yellow_on_btn.clicked.connect(self.statuslight_yellow_on)
         self.statuslight_all_off_btn.clicked.connect(self.statuslight_all_off)
+
+    def pd_signal_connect(self):
+        self.pd_motor_stretch_out_btn.clicked.connect(self.pd_motor_stretch_out)    # 伸
+        self.pd_motor_drawback_btn.clicked.connect(self.pd_motor_drawback)          # 缩
+        self.pd_poweron_btn.clicked.connect(self.pd_poweron)                        # 下电
+        self.pd_poweroff_btn.clicked.connect(self.pd_poweroff)                      # 下电
+        self.pd_selfcheck_btn.clicked.connect(self.pd_selfcheck)                    # 自检
+        self.pd_motor_query_pos_btn.clicked.connect(self.pd_motor_query_pos)        # 查询局放电机位置
+        self.pd_motor_set_pos_btn.clicked.connect(self.pd_motor_set_pos)             # 设置局放电机位置
+        self.pd_query_ultrasonic_value_btn.clicked.connect(self.pd_query_ultrasonic_value)  # 查询超声波值
+        self.pd_query_ultrasonic_PRPD_btn.clicked.connect(self.pd_query_ultrasonic_PRPD)    # 查询超声波prpd图谱
+        self.pd_query_ultrasonic_PRPS_btn.clicked.connect(self.pd_query_ultrasonic_PRPS)    # 查询超声波prps图谱
+        self.pd_query_UHF_TEV_value_btn.clicked.connect(self.pd_query_UHF_TEV_value)        # 查询地电波或高频值
+        self.pd_query_UHF_TEV_PRPD_btn.clicked.connect(self.pd_query_UHF_TEV_PRPD)          # 查询地电波或高频prpd图谱
+        self.pd_query_UHF_TEV_PRPS_btn.clicked.connect(self.pd_query_UHF_TEV_PRPS)          # 查询地电波或高频prps图谱
 
     def clear_runinfo(self):
         self.runinfo_te.clear()
@@ -153,7 +169,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
             self.runinfo_signal.emit(run_msg, None)
 
 
-##-------------------------云台指令-------------------------------
+#-------------------------云台指令-------------------------------
     def ptz_poweron(self):
         self.send_single_cmd(0x01, 0x01, 0x01, '', '云台上电')
 
@@ -326,6 +342,48 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
     def statuslight_all_off(self):
         self.send_single_cmd(0x09, 0x01, 0x04, '', '关灯亮')
 
+# -------------------------局放指令---------------------------------
+    def pd_motor_stretch_out(self):
+        self.send_single_cmd(0x02, 0x01, 0x0F, '', '局放伸')
+
+    # device_type, len, opcode, data, description):
+    def pd_motor_drawback(self):
+        self.send_single_cmd(0x02, 0x01, 0x10, '', '局放缩')
+
+    def pd_poweron(self):
+        self.send_single_cmd(0x02, 0x01, 0x01, '', '局放上电')
+
+    def pd_poweroff(self):
+        self.send_single_cmd(0x02, 0x01, 0x02, '', '局放下电')
+
+    def pd_selfcheck(self):
+        self.send_single_cmd(0x02, 0x01, 0x15, '', '局放自检')
+
+    def pd_motor_query_pos(self):
+        self.send_single_cmd(0x02, 0x01, 0x12, '', '查询局放位置')
+
+    def pd_motor_set_pos(self):
+        self.send_single_cmd(0x02, 0x01, 0x11, '', '设置局放位置')
+
+    def pd_query_ultrasonic_value(self):
+        self.send_single_cmd(0x02, 0x01, 0x03, '', '查询超声波值')
+
+    def pd_query_ultrasonic_PRPD(self):
+        self.send_single_cmd(0x02, 0x01, 0x04, '', '查询超声波PRPD图谱')
+
+    def pd_query_ultrasonic_PRPS(self):
+        self.send_single_cmd(0x02, 0x01, 0x05, '', '查询超声波PRPS图谱')
+
+    def pd_query_UHF_TEV_value(self):
+        self.send_single_cmd(0x02, 0x01, 0x06, '', '查询地电波/高频值')
+
+    def pd_query_UHF_TEV_PRPD(self):
+        self.send_single_cmd(0x02, 0x01, 0x07, '', '查询地电波/高频PRPD图谱')
+
+    def pd_query_UHF_TEV_PRPS(self):
+        self.send_single_cmd(0x02, 0x01, 0x08, '', '查询地电波/高频PRPS图谱')
+
+
     def connect_net(self):
         """
         连接网络
@@ -441,57 +499,57 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
                     self.ptz_inplace_le.setText('俯仰到位')
                 self.is_ptz_pitching_inplace = True
 
-                    if op_code == 0x11:
-                        bearing = data
-                        self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
-                        self.ptz_bearing_le.setText(str(float(bearing / 100)))
-                    if op_code == 0x12:
-                        pitching = data
-                        self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
-                        self.ptz_pitching_le.setText(str(float(pitching / 100)))
+            if op_code == 0x11:
+                bearing = data
+                self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
+                self.ptz_bearing_le.setText(str(float(bearing / 100)))
+            if op_code == 0x12:
+                pitching = data
+                self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
+                self.ptz_pitching_le.setText(str(float(pitching / 100)))
 
-                    if op_code == 0x13:
-                        velocity = data
-                        self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
-                        self.ptz_velocity_le.setText(str(float(velocity / 100)))
+            if op_code == 0x13:
+                velocity = data
+                self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
+                self.ptz_velocity_le.setText(str(float(velocity / 100)))
 
-                    if op_code == 0x16:
-                        cur_pan_pos = data
-                        self.runinfo_signal.emit('收到云台方位： ' + str(float(cur_pan_pos / 100)), None)
-                        self.ptz_cur_pan_le.setText(str(float(cur_pan_pos / 100)))
+            if op_code == 0x16:
+                cur_pan_pos = data
+                self.runinfo_signal.emit('收到云台方位： ' + str(float(cur_pan_pos / 100)), None)
+                self.ptz_cur_pan_le.setText(str(float(cur_pan_pos / 100)))
 
-                    if op_code == 0x13:
-                        velocity = data
-                        self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
-                        self.ptz_velocity_le.setText(str(float(velocity / 100)))
-                # 局放
-                if device_type == 0x02:
-                    if op_code == 0x02:
-                        self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
-                        self.partialdischarge_result_le.setText(str(float(data / 100)))
+            if op_code == 0x13:
+                velocity = data
+                self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
+                self.ptz_velocity_le.setText(str(float(velocity / 100)))
+        # 局放
+        if device_type == 0x02:
+            if op_code == 0x02:
+                self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
+                self.partialdischarge_result_le.setText(str(float(data / 100)))
 
-                # 测距（测高度）
-                if device_type == 0x08:
-                    if op_code == 0x02:
-                        distance = data
-                        self.runinfo_signal.emit('测距结果值： ' + str(float(data)), None)
-                        self.ranging_cur_position_le.setText(str(float(distance)))
-                # 行走电机
-                if device_type == 0x03:
-                    if op_code == 0x08:
-                        self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
-                        self.walkmotor_realtime_pos_le.setText(str(data))
-                    if op_code == 0x0B:
-                        self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
-                        self.walkmotor_realtime_speed_le.setText(str(data))
-                    if op_code == 0x0c:
-                        self.is_walkmotor_inplace = True
-                        self.walkmotor_inplace_le.setText('到位')
+        # 测距（测高度）
+        if device_type == 0x08:
+            if op_code == 0x02:
+                distance = data
+                self.runinfo_signal.emit('测距结果值： ' + str(float(data)), None)
+                self.ranging_cur_position_le.setText(str(float(distance)))
+        # 行走电机
+        if device_type == 0x03:
+            if op_code == 0x08:
+                self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
+                self.walkmotor_realtime_pos_le.setText(str(data))
+            if op_code == 0x0B:
+                self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
+                self.walkmotor_realtime_speed_le.setText(str(data))
+            if op_code == 0x0c:
+                self.is_walkmotor_inplace = True
+                self.walkmotor_inplace_le.setText('到位')
 
-                if device_type == 0x04:
-                    if op_code == 0x02:
-                        self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
-                        self.barcode_position_le.setText(str(float(data / 100)))
+        if device_type == 0x04:
+            if op_code == 0x02:
+                self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
+                self.barcode_position_le.setText(str(float(data / 100)))
 
         if device_type == 0x05:
             if op_code == 0x04:
@@ -531,8 +589,6 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         if device_type == 0x08:
             if op_code == 0x02:
                 self.runinfo_signal.emit('测距结果值： ' + str(float(data / 100)), None)
-
-    pass
 
     def parse_recv_data(self, frame):
         """
