@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1181</width>
-    <height>876</height>
+    <width>1182</width>
+    <height>935</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,201 +122,6 @@
        </layout>
       </widget>
      </item>
-     <item row="0" column="1" rowspan="2">
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>云台</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_6">
-        <property name="topMargin">
-         <number>20</number>
-        </property>
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_3">
-          <item row="1" column="2">
-           <widget class="QPushButton" name="ptz_stop_btn">
-            <property name="text">
-             <string>停</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QPushButton" name="ptz_rightup_btn">
-            <property name="text">
-             <string>右上</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <widget class="QPushButton" name="ptz_rightdown_btn">
-            <property name="text">
-             <string>右下</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QPushButton" name="ptz_right_btn">
-            <property name="text">
-             <string>右</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="ptz_leftdown_btn">
-            <property name="text">
-             <string>左下</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QPushButton" name="ptz_up_btn">
-            <property name="text">
-             <string>上</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QPushButton" name="ptz_leftup_btn">
-            <property name="text">
-             <string>左上</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="ptz_down_btn">
-            <property name="text">
-             <string>下</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QPushButton" name="ptz_left_btn">
-            <property name="text">
-             <string>左</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item row="2" column="0">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="ptz_velocity_le">
-            <property name="text">
-             <string>5</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="ptz_set_velocity_btn">
-            <property name="text">
-             <string>设置速度</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QPushButton" name="ptz_query_velocity_btn">
-            <property name="text">
-             <string>速度查询</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="ptz_set_zero_position_btn">
-            <property name="text">
-             <string>云台校正</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>到位反馈</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QPushButton" name="ptz_poweron_btn">
-            <property name="text">
-             <string>上电</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QPushButton" name="ptz_poweroff_btn">
-            <property name="text">
-             <string>下电</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" colspan="2">
-           <widget class="QLineEdit" name="ptz_inplace_le"/>
-          </item>
-         </layout>
-        </item>
-        <item row="1" column="0">
-         <layout class="QGridLayout" name="gridLayout_5">
-          <item row="1" column="1" colspan="2">
-           <widget class="QLineEdit" name="ptz_pitching_le">
-            <property name="text">
-             <string>0.00</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="ptz_set_pitching_btn">
-            <property name="text">
-             <string>设置俯仰</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="ptz_set_bearing_btn">
-            <property name="text">
-             <string>设置方位</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1" colspan="2">
-           <widget class="QLineEdit" name="ptz_bearing_le">
-            <property name="text">
-             <string>0.00</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="3">
-           <widget class="QPushButton" name="ptz_query_bearing_btn">
-            <property name="text">
-             <string>查询方位</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QPushButton" name="ptz_query_pitching_btn">
-            <property name="text">
-             <string>查询俯仰</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="ptz_set_bearing_pitching_btn">
-            <property name="text">
-             <string>同时设置</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <widget class="QPushButton" name="ptz_query_bearing_pitching_btn">
-            <property name="text">
-             <string>同时查询</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </item>
      <item row="0" column="2" rowspan="6">
       <widget class="QGroupBox" name="groupBox_11">
        <property name="title">
@@ -419,6 +224,34 @@ p, li { white-space: pre-wrap; }
         </property>
         <item row="1" column="0">
          <layout class="QGridLayout" name="gridLayout_8">
+          <item row="0" column="1" colspan="3">
+           <widget class="QLineEdit" name="walkmotor_pos_le">
+            <property name="text">
+             <string>0.0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QLabel" name="label_21">
+            <property name="text">
+             <string>mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>mm</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="3">
+           <widget class="QLineEdit" name="walkmotor_velocity_le">
+            <property name="text">
+             <string>100</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QPushButton" name="walkmotor_set_pos_btn">
             <property name="text">
@@ -433,27 +266,6 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_16">
-            <property name="text">
-             <string>   位置:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QLabel" name="label_20">
-            <property name="text">
-             <string>mm/s</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4">
-           <widget class="QLabel" name="label_19">
-            <property name="text">
-             <string>mm</string>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="0">
            <widget class="QLabel" name="label_17">
             <property name="text">
@@ -461,24 +273,10 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="0" column="1" colspan="3">
-           <widget class="QLineEdit" name="walkmotor_pos_le">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_16">
             <property name="text">
-             <string>0.0</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1" colspan="3">
-           <widget class="QLineEdit" name="walkmotor_velocity_le">
-            <property name="text">
-             <string>100</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1" colspan="3">
-           <widget class="QLineEdit" name="walkmotor_realtime_pos_le">
-            <property name="text">
-             <string>0.0</string>
+             <string>   位置:</string>
             </property>
            </widget>
           </item>
@@ -489,17 +287,24 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
-          <item row="2" column="4">
-           <widget class="QLabel" name="label_21">
-            <property name="text">
-             <string>mm</string>
-            </property>
-           </widget>
-          </item>
           <item row="3" column="4">
            <widget class="QLabel" name="label_22">
             <property name="text">
              <string>mm/s</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>mm/s</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLineEdit" name="walkmotor_realtime_position_le">
+            <property name="text">
+             <string>0.0</string>
             </property>
            </widget>
           </item>
@@ -574,114 +379,6 @@ p, li { white-space: pre-wrap; }
         </item>
        </layout>
       </widget>
-     </item>
-     <item row="2" column="1" rowspan="3">
-      <layout class="QGridLayout" name="gridLayout_20">
-       <item row="0" column="0">
-        <widget class="QGroupBox" name="groupBox_7">
-         <property name="title">
-          <string>局放</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_16">
-          <property name="topMargin">
-           <number>20</number>
-          </property>
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QPushButton" name="partialdischarge_detect_btn">
-              <property name="text">
-               <string>探测</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="partialdischarge_result_le"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QGroupBox" name="groupBox_8">
-         <property name="title">
-          <string>条形码</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_17">
-          <property name="topMargin">
-           <number>20</number>
-          </property>
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QPushButton" name="barcode_query_position_btn">
-              <property name="text">
-               <string>查询位置</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="barcode_position_le"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QGroupBox" name="groupBox_9">
-         <property name="title">
-          <string>霍尔</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_18">
-          <property name="topMargin">
-           <number>20</number>
-          </property>
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QPushButton" name="hall_query_position_btn">
-              <property name="text">
-               <string>查询位置</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="hall_position_le"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QGroupBox" name="groupBox_10">
-         <property name="title">
-          <string>测距</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_19">
-          <property name="topMargin">
-           <number>20</number>
-          </property>
-          <item row="0" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <item>
-             <widget class="QPushButton" name="ranging_query_position_btn">
-              <property name="text">
-               <string>查询位置</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="ranging_position_le"/>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
      </item>
      <item row="5" column="1">
       <widget class="QGroupBox" name="groupBox_5">
@@ -958,6 +655,384 @@ p, li { white-space: pre-wrap; }
            <widget class="QPushButton" name="lift_down_btn">
             <property name="text">
              <string>降</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <layout class="QGridLayout" name="gridLayout_20">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <property name="verticalSpacing">
+        <number>6</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>局放</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <property name="topMargin">
+           <number>20</number>
+          </property>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QPushButton" name="hall_query_position_btn">
+              <property name="text">
+               <string>霍尔信息</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="hall_position_le"/>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QPushButton" name="partialdischarge_detect_btn">
+              <property name="text">
+               <string>局放信息</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="partialdischarge_result_le"/>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QPushButton" name="barcode_query_position_btn">
+              <property name="text">
+               <string>条码信息</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="barcode_position_le"/>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QPushButton" name="ranging_query_position_btn">
+              <property name="text">
+               <string>测距位置</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ranging_cur_position_le"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="0" column="1" rowspan="4">
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="title">
+        <string>云台</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_6">
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="1" column="2">
+           <widget class="QPushButton" name="ptz_stop_btn">
+            <property name="text">
+             <string>停</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="ptz_irup_btn">
+            <property name="text">
+             <string>右上</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QPushButton" name="ptz_irdown_btn">
+            <property name="text">
+             <string>右下</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="ptz_vldown_btn">
+            <property name="text">
+             <string>左下</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QPushButton" name="ptz_vlup_btn">
+            <property name="text">
+             <string>左上</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QPushButton" name="ptz_right_btn">
+            <property name="text">
+             <string>右</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QPushButton" name="ptz_left_btn">
+            <property name="text">
+             <string>左</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="3" column="0">
+           <widget class="QPushButton" name="ptz_query_left_tilt_btn">
+            <property name="text">
+             <string>查询左俯仰</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QPushButton" name="ptz_query_right_tilt_btn">
+            <property name="text">
+             <string>查询右俯仰</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_30">
+            <property name="text">
+             <string>度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLabel" name="label_33">
+            <property name="text">
+             <string>度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QLabel" name="label_39">
+            <property name="text">
+             <string>度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="ptz_set_left_tilt_btn">
+            <property name="text">
+             <string>设置左俯仰</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_31">
+            <property name="text">
+             <string>度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_cur_pan_le">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QPushButton" name="ptz_query_bearing_pitching_btn">
+            <property name="text">
+             <string>同时查询</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="ptz_query_bearing_btn">
+            <property name="text">
+             <string>查询方位</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="ptz_set_bearing_btn">
+            <property name="text">
+             <string>设置方位</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QLabel" name="label_38">
+            <property name="text">
+             <string>度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QPushButton" name="ptz_set_right_tilt_btn">
+            <property name="text">
+             <string>设置右俯仰</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_bearing_le">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QLabel" name="label_32">
+            <property name="text">
+             <string>度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QPushButton" name="ptz_set_bearing_pitching_btn">
+            <property name="text">
+             <string>同时设置</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_set_left_tilt_le">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_cur_left_tilt_le">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_set_right_tilt_le">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_cur_right_tilt_le_">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1" colspan="2">
+           <widget class="QLineEdit" name="ptz_pitching_le_9">
+            <property name="text">
+             <string>0.00</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="2" column="0">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="2" column="2">
+           <widget class="QLabel" name="label_40">
+            <property name="text">
+             <string>度/秒</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="ptz_self_check_btn">
+            <property name="text">
+             <string>云台自检</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="ptz_cur_velocity_le">
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QPushButton" name="ptz_poweroff_btn">
+            <property name="text">
+             <string>下电</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="ptz_query_velocity_btn">
+            <property name="text">
+             <string>速度查询</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QLabel" name="label_41">
+            <property name="text">
+             <string>度/秒</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="ptz_set_velocity_le">
+            <property name="text">
+             <string>0.5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="ptz_poweron_btn">
+            <property name="text">
+             <string>上电</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="ptz_set_velocity_btn">
+            <property name="text">
+             <string>设置速度</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QPushButton" name="ptz_set_zero_position_btn">
+            <property name="text">
+             <string>云台校正</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="ptz_inplace_le"/>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>到位反馈</string>
             </property>
            </widget>
           </item>

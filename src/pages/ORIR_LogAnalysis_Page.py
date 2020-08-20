@@ -28,6 +28,8 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
         self.level_cbb.setView(QListView())
         self.tag_cbb.setView(QListView())
 
+        self.get_host_ip()
+
     def signal_connect(self):
         self.get_local_ip_btn.clicked.connect(self.get_host_ip)
         self.udp_connect_btn.clicked.connect(self.udp_connect_net)
@@ -47,14 +49,14 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
         获取本机IP
         :return:
         """
-        self.ip_addr_le.clear()
+        self.udp_ip_addr_le.clear()
         self.local_ip = socket.gethostbyname(socket.gethostname())
-        self.ip_addr_le.setText(str(self.local_ip))
+        self.udp_ip_addr_le.setText(str(self.local_ip))
         print(self.local_ip)
 
     def udp_connect_net(self):
         if self.udp_connect_btn.text() == 'UDP连接':
-            self.udp_server_start(str(self.ip_addr_le.text()), int(self.udp_port_le.text()))
+            self.udp_server_start(str(self.udp_ip_addr_le.text()), int(self.udp_port_le.text()))
             self.link = True
             self.udp_connect_btn.setText('UDP断开')
             self.runinfo_signal.emit('UDP连接成功\n', None)
@@ -64,9 +66,11 @@ class ORIR_LogAnalysis(QWidget, Ui_ORIR_LogAnalysis_Page, TCP_Client, UDP_Server
             self.udp_connect_btn.setText('UDP连接')
             self.runinfo_signal.emit('UDP 断开', None)
 
+        self.tcp_connect_net()
+
     def tcp_connect_net(self):
         if self.tcp_connect_btn.text() == 'TCP连接':
-            self.tcp_client_start(str(self.ip_addr_le.text()), int(self.tcp_port_le.text()))
+            self.tcp_client_start(str(self.tcp_ip_addr_le.text()), int(self.tcp_port_le.text()))
             self.link = True
             self.tcp_connect_btn.setText('TCP断开')
             self.runinfo_signal.emit('TCP连接成功\n', None)

@@ -62,8 +62,10 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
     def ptz_signal_connect(self):
         self.ptz_poweron_btn.clicked.connect(self.ptz_poweron)
         self.ptz_poweroff_btn.clicked.connect(self.ptz_poweroff)
-        self.ptz_down_btn.clicked.connect(self.ptz_down)
-        self.ptz_up_btn.clicked.connect(self.ptz_up)
+        self.ptz_irdown_btn.clicked.connect(self.ptz_ir_down)
+        self.ptz_irup_btn.clicked.connect(self.ptz_ir_up)
+        self.ptz_vldown_btn.clicked.connect(self.ptz_vl_down)
+        self.ptz_vlup_btn.clicked.connect(self.ptz_vl_up)
         self.ptz_left_btn.clicked.connect(self.ptz_left)
         self.ptz_right_btn.clicked.connect(self.ptz_right)
         self.ptz_leftup_btn.clicked.connect(self.ptz_leftup)
@@ -73,11 +75,14 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.ptz_stop_btn.clicked.connect(self.ptz_stop)
 
         self.ptz_set_bearing_btn.clicked.connect(self.ptz_set_bearing)
-        self.ptz_set_pitching_btn.clicked.connect(self.ptz_set_pitching)
+        self.ptz_set_left_tilt_btn.clicked.connect(self.ptz_set_left_tilt)
+        self.ptz_set_right_tilt_btn.clicked.connect(self.ptz_set_right_tilt)
+        self.ptz_set_velocity_btn.clicked.connect(self.ptz_set_velocity)
+        self.ptz_query_velocity_btn.clicked.connect(self.ptz_query_velocity)
         self.ptz_query_bearing_btn.clicked.connect(self.ptz_query_bearing)
-        self.ptz_query_pitching_btn.clicked.connect(self.ptz_query_pitching)
-        self.ptz_set_bearing_pitching_btn.clicked.connect(self.ptz_set_bearing_pitching)
-        self.ptz_query_bearing_pitching_btn.clicked.connect(self.ptz_query_bearing_pitching)
+        self.ptz_query_left_tilt_btn.clicked.connect(self.ptz_query_left_tilt)
+        self.ptz_query_right_tilt_btn.clicked.connect(self.ptz_query_right_tilt)
+        self.ptz_self_check_btn.clicked.connect(self.ptz_self_check)
 
         self.ptz_set_velocity_btn.clicked.connect(self.ptz_set_velocity)
         self.ptz_query_velocity_btn.clicked.connect(self.ptz_query_velocity)
@@ -161,62 +166,76 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
     def ptz_poweroff(self):
         self.send_single_cmd(0x01, 0x01, 0x02, '', '云台下电')
 
-    def ptz_down(self):
-        self.send_single_cmd(0x01, 0x01, 0x05, '', '云台向下')
+    def ptz_set_zero_position(self):
+        self.send_single_cmd(0x01, 0x01, 0x03, '', '校正云台')
 
-    def ptz_up(self):
-        self.send_single_cmd(0x01, 0x01, 0x04, '', '云台向上')
+    def ptz_vl_up(self):
+        self.send_single_cmd(0x01, 0x01, 0x04, '', '可见光俯仰向上')
+
+    def ptz_vl_down(self):
+        self.send_single_cmd(0x01, 0x01, 0x05, '', '可见光俯仰向下')
+
+    def ptz_ir_up(self):
+        self.send_single_cmd(0x01, 0x01, 0x06, '', '红外俯仰向上')
+
+    def ptz_ir_down(self):
+        self.send_single_cmd(0x01, 0x01, 0x07, '', '红外俯仰向下')
 
     def ptz_left(self):
-        self.send_single_cmd(0x01, 0x01, 0x06, '', '云台向左')
+        self.send_single_cmd(0x01, 0x01, 0x08, '', '云台方位向左')
 
     def ptz_right(self):
-        self.send_single_cmd(0x01, 0x01, 0x07, '', '云台向左')
-
-    def ptz_leftup(self):
-        self.ptz_left()
-        self.ptz_up()
-
-    def ptz_leftdown(self):
-        self.ptz_left()
-        self.ptz_down()
-
-    def ptz_rightup(self):
-        self.ptz_right()
-        self.ptz_up()
-
-    def ptz_rightdown(self):
-        self.ptz_right()
-        self.ptz_down()
+        self.send_single_cmd(0x01, 0x01, 0x09, '', '云台方位向右')
 
     def ptz_stop(self):
-        self.send_single_cmd(0x01, 0x01, 0x08, '', '云台停止')
+        self.send_single_cmd(0x01, 0x01, 0x0A, '', '云台停止')
 
     def ptz_set_bearing(self):
-        bearing = int(float(self.ptz_bearing_le.text()) * 100)
-        self.send_single_cmd(0x01, 0x03, 0x09, bearing, '设置云台方位')
+        bearing = int(float(self.ptz_bearing_le.text())*100.0)
+        self.send_single_cmd(0x01, 0x01, 0x0B, bearing, '设置云台方位')
         self.is_ptz_bearing_inplace = True
         self.ptz_inplace_le.setText('')
 
-    def ptz_set_pitching(self):
-        pitching = int(float(self.ptz_pitching_le.text()) * 100)
-        self.send_single_cmd(0x01, 0x03, 0x0a, pitching, '设置云台俯仰')
+    def ptz_set_left_tilt(self):
+        left_tilt = int(float(self.ptz_set_left_tilt_le.text())*100.0)
+        self.send_single_cmd(0x01, 0x01, 0x0C, left_tilt, '设置可见光俯仰')
         self.is_ptz_pitching_inplace = True
         self.ptz_inplace_le.setText('')
 
-    def ptz_query_bearing(self):
-        self.send_single_cmd(0x01, 0x01, 0x0d, '', '查询方位')
+    def ptz_set_right_tilt(self):
+        right_tilt = int(float(self.ptz_set_right_tilt_le.text())*100.0)
+        self.send_single_cmd(0x01, 0x01, 0x0D, right_tilt, '设置红外俯仰')
+        self.is_ptz_pitching_inplace = True
+        self.ptz_inplace_le.setText('')
 
-    def ptz_query_pitching(self):
-        self.send_single_cmd(0x01, 0x01, 0x0e, '', '查询俯仰')
+    def ptz_set_velocity(self):
+        velocity = int(float(self.ptz_set_velocity_le.text()) * 100)
+        self.send_single_cmd(0x01, 0x03, 0x0E, velocity, '设置云台速度')
+
+    def ptz_query_velocity(self):
+        self.send_single_cmd(0x01, 0x01, 0x0F, '', '查询云台速度')
+
+    def ptz_query_bearing(self):
+        self.send_single_cmd(0x01, 0x01, 0x10, '', '查询方位')
+
+    def ptz_query_left_tilt(self):
+        self.send_single_cmd(0x01, 0x01, 0x11, '', '查询可见光俯仰')
+
+    def ptz_query_right_tilt(self):
+        self.send_single_cmd(0x01, 0x01, 0x12, '', '查询红外俯仰')
+
+    def ptz_self_check(self):
+        self.send_single_cmd(0x01, 0x01, 0x1A, '', '云台自检')
 
     def ptz_set_bearing_pitching(self):
         self.ptz_set_bearing()
-        self.ptz_set_pitching()
+        self.ptz_set_left_tilt()
+        self.ptz_set_right_tilt()
 
     def ptz_query_bearing_pitching(self):
         self.ptz_query_bearing()
-        self.ptz_query_pitching()
+        self.ptz_query_left_tilt()
+        self.ptz_query_right_tilt()
 
     def ptz_set_velocity(self):
         velocity = int(float(self.ptz_velocity_le.text()) * 100)
@@ -437,40 +456,57 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
                     self.ptz_inplace_le.setText('俯仰到位')
                 self.is_ptz_pitching_inplace = True
 
-            if op_code == 0x11:
-                bearing = data
-                self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
-                self.ptz_bearing_le.setText(str(float(bearing / 100)))
-            if op_code == 0x12:
-                pitching = data
-                self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
-                self.ptz_pitching_le.setText(str(float(pitching / 100)))
+                    if op_code == 0x11:
+                        bearing = data
+                        self.runinfo_signal.emit('收到方位： ' + str(float(bearing / 100)), None)
+                        self.ptz_bearing_le.setText(str(float(bearing / 100)))
+                    if op_code == 0x12:
+                        pitching = data
+                        self.runinfo_signal.emit('收到俯仰： ' + str(float(pitching / 100)), None)
+                        self.ptz_pitching_le.setText(str(float(pitching / 100)))
 
-            if op_code == 0x13:
-                velocity = data
-                self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
-                self.ptz_velocity_le.setText(str(float(velocity / 100)))
-        # 局放
-        if device_type == 0x02:
-            if op_code == 0x02:
-                self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
-                self.partialdischarge_result_le.setText(str(float(data / 100)))
-        # 行走电机
-        if device_type == 0x03:
-            if op_code == 0x08:
-                self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
-                self.walkmotor_realtime_pos_le.setText(str(data))
-            if op_code == 0x0B:
-                self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
-                self.walkmotor_realtime_speed_le.setText(str(data))
-            if op_code == 0x0c:
-                self.is_walkmotor_inplace = True
-                self.walkmotor_inplace_le.setText('到位')
+                    if op_code == 0x13:
+                        velocity = data
+                        self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
+                        self.ptz_velocity_le.setText(str(float(velocity / 100)))
 
-        if device_type == 0x04:
-            if op_code == 0x02:
-                self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
-                self.barcode_position_le.setText(str(float(data / 100)))
+                    if op_code == 0x16:
+                        cur_pan_pos = data
+                        self.runinfo_signal.emit('收到云台方位： ' + str(float(cur_pan_pos / 100)), None)
+                        self.ptz_cur_pan_le.setText(str(float(cur_pan_pos / 100)))
+
+                    if op_code == 0x13:
+                        velocity = data
+                        self.runinfo_signal.emit('收到云台速度： ' + str(float(velocity / 100)), None)
+                        self.ptz_velocity_le.setText(str(float(velocity / 100)))
+                # 局放
+                if device_type == 0x02:
+                    if op_code == 0x02:
+                        self.runinfo_signal.emit('局放结果值： ' + str(float(data / 100)), None)
+                        self.partialdischarge_result_le.setText(str(float(data / 100)))
+
+                # 测距（测高度）
+                if device_type == 0x08:
+                    if op_code == 0x02:
+                        distance = data
+                        self.runinfo_signal.emit('测距结果值： ' + str(float(data)), None)
+                        self.ranging_cur_position_le.setText(str(float(distance)))
+                # 行走电机
+                if device_type == 0x03:
+                    if op_code == 0x08:
+                        self.runinfo_signal.emit('行走电机位置： ' + str(data), None)
+                        self.walkmotor_realtime_pos_le.setText(str(data))
+                    if op_code == 0x0B:
+                        self.runinfo_signal.emit('行走电机速度： ' + str(data), None)
+                        self.walkmotor_realtime_speed_le.setText(str(data))
+                    if op_code == 0x0c:
+                        self.is_walkmotor_inplace = True
+                        self.walkmotor_inplace_le.setText('到位')
+
+                if device_type == 0x04:
+                    if op_code == 0x02:
+                        self.runinfo_signal.emit('条形码位置： ' + str(float(data / 100)), None)
+                        self.barcode_position_le.setText(str(float(data / 100)))
 
         if device_type == 0x05:
             if op_code == 0x04:
