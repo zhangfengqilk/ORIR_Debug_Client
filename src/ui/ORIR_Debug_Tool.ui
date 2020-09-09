@@ -29,8 +29,8 @@
   <widget class="QPushButton" name="set_edge_nums_btn">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>170</y>
+     <x>240</x>
+     <y>120</y>
      <width>75</width>
      <height>23</height>
     </rect>
@@ -104,13 +104,13 @@
     <string>4缩放</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>110</y>
      <width>211</width>
-     <height>42</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -188,7 +188,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -214,7 +214,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -240,7 +240,7 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
