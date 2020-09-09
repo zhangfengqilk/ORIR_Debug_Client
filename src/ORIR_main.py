@@ -3,7 +3,9 @@ from src.depends.FramelessWindow.FrameLessWindow import QFramelessWindow
 from src.pages.ORIR_Debug_Page import ORIR_Debug
 from src.pages.ORIR_LogAnalysis_Page import ORIR_LogAnalysis
 from src.pages.ORIR_Collection_Data_Page import ORIR_CollectionData
+from src.pages.ORIR_Debug_Tool_Page import ORIR_Tool
 from src.pages.ORIR_Debug_Help_Page import ORIR_Help
+
 import sys
 from PySide2.QtWidgets import QHBoxLayout, QApplication, QStackedWidget,QMessageBox
 from PySide2.QtGui import QColor
@@ -31,6 +33,9 @@ class ORIRMain(QFramelessWindow):
         self._m_stacked_widget.addWidget(self._loganalysis_page)
         self._collectiondata_page = ORIR_CollectionData()
         self._m_stacked_widget.addWidget(self._collectiondata_page)
+
+        self._m_tool_page = ORIR_Tool()
+        self._m_stacked_widget.addWidget(self._m_tool_page)
 
         self._help_page = ORIR_Help()
         self._m_stacked_widget.addWidget(self._help_page)
@@ -66,6 +71,7 @@ class ORIRMain(QFramelessWindow):
         self._m_navigation_bar.add_item('前期调试')
         self._m_navigation_bar.add_item('日志分析')
         self._m_navigation_bar.add_item('采点工具')
+        self._m_navigation_bar.add_item('辅助工具')
         self._m_navigation_bar.add_item('帮助')
         self._m_navigation_bar.set_item_line_style(QSlideNavigationBar.ItemLineStyle.ItemLeft)
         self._m_navigation_bar.set_item_line_color(QColor('red'))
