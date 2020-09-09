@@ -10,6 +10,8 @@ import sys
 from PySide2.QtWidgets import QHBoxLayout, QApplication, QStackedWidget,QMessageBox
 from PySide2.QtGui import QColor
 from PySide2.QtCore import Qt
+from PySide2 import QtCore
+
 
 
 class ORIRMain(QFramelessWindow):
@@ -86,6 +88,7 @@ class ORIRMain(QFramelessWindow):
         # 判断返回结果处理相应事项
         if reply == QMessageBox.Yes:
             self._debug_page.close_all()
+            self._m_tool_page.close_all()
             event.accept()
         else:
             event.ignore()

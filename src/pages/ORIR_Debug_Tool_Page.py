@@ -205,22 +205,11 @@ class ORIR_Tool(QWidget, Ui_ORIR_Debug_Tool):
         ax.invert_yaxis()  # 绘图：y轴反向
         plt.show()
 
-
-
-    def __del__(self):
-        # message为窗口标题
-        # Are you sure to quit?窗口显示内容
-        # QtGui.QMessageBox.Yes | QtGui.QMessageBox.No窗口按钮部件
-        # QtGui.QMessageBox.No默认焦点停留在NO上
+    def close_all(self):
         print("close")
-        plt.close(1)
-        # reply = QMessageBox.question(self, 'Message', "确定退出？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        # # 判断返回结果处理相应事项
-        # if reply == QMessageBox.Yes:
-        #     self._debug_page.close_all()
-        #     event.accept()
-        # else:
-        #     event.ignore()
+        for e in self.figs:
+            plt.close(e)
+
 
 
 
