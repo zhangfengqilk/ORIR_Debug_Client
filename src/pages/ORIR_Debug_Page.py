@@ -7,6 +7,7 @@ from src.base.tcp_server import TCP_Server
 from src.base.udp_server import UDP_Server
 from src.base.tcp_client import TCP_Client
 from src.base.udp_client import UDP_Client
+from ..grpcFile import AvicRobotClient
 
 import time
 import datetime
@@ -14,7 +15,7 @@ import threading
 from src.base.utils import *
 
 
-class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server, UDP_Client):
+class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server, TCP_Client, UDP_Server, UDP_Client):
     def __init__(self):
         super(ORIR_Debug, self).__init__()
         Ui_ORIR_Debug_Page.__init__(self)
@@ -23,6 +24,8 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         TCP_Client.__init__(self)
         UDP_Client.__init__(self)
 
+        self.avicRobot = AvicRobotClient.AvicRobotClient()
+
         self.setupUi(self)
         self.link = False
         self.signal_connect()
@@ -30,7 +33,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.send_period = 0
         self.is_cycle_send = False
         self.net_type_cbb.setView(QListView())
-        self.recv_data_buf = [] # 缓存从底层收到的数据，用于解析帧
+        self.recv_data_buf = []  # 缓存从底层收到的数据，用于解析帧
         # 标志位
         self.is_ptz_bearing_inplace = False
         self.is_ptz_pitching_inplace = False
@@ -42,24 +45,24 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         信号槽设置
         :return:
         """
+        self.com_interface_cbb.currentIndexChanged.connect(self.on_com_interface_cbb_changed)
         self.net_connect_btn.clicked.connect(self.connect_net)
         self.get_local_ip_btn.clicked.connect(self.get_host_ip)
         self.runinfo_signal.connect(self.show_runinfo)
         self.recv_data_signal.connect(self.parse_recv_data)
         self.send_debug_msg_btn.clicked.connect(self.send_debug_msg)
 
-        self.ptz_signal_connect()           # 云台
-        self.debug_signal_connect()         # 调试信息
-        self.walkmotor_signal_connect()     # 行走电机
-        self.lifter_signal_connect()        # 升降电机
-        self.pd_signal_connect()            # 局放控制的信号绑定
-        self.statuslight_signal_connect()   # 状态灯
+        self.ptz_signal_connect()  # 云台
+        self.debug_signal_connect()  # 调试信息
+        self.walkmotor_signal_connect()  # 行走电机
+        self.lifter_signal_connect()  # 升降电机
+        self.pd_signal_connect()  # 局放控制的信号绑定
+        self.statuslight_signal_connect()  # 状态灯
 
         # 其他部分
         self.barcode_query_position_btn.clicked.connect(self.barcode_query_position)
         self.hall_query_position_btn.clicked.connect(self.hall_query_position)
         self.ranging_query_position_btn.clicked.connect(self.ranging_query_position)
-
 
     def ptz_signal_connect(self):
         self.ptz_poweron_btn.clicked.connect(self.ptz_poweron)
@@ -117,32 +120,32 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.statuslight_all_off_btn.clicked.connect(self.statuslight_all_off)
 
     def pd_signal_connect(self):
-        self.pd_motor_stretch_out_btn.clicked.connect(self.pd_motor_stretch_out)    # 伸
-        self.pd_motor_drawback_btn.clicked.connect(self.pd_motor_drawback)          # 缩
-        self.pd_poweron_btn.clicked.connect(self.pd_poweron)                        # 下电
-        self.pd_poweroff_btn.clicked.connect(self.pd_poweroff)                      # 下电
-        self.pd_selfcheck_btn.clicked.connect(self.pd_selfcheck)                    # 自检
-        self.pd_motor_query_pos_btn.clicked.connect(self.pd_motor_query_pos)        # 查询局放电机位置
-        self.pd_motor_set_pos_btn.clicked.connect(self.pd_motor_set_pos)             # 设置局放电机位置
+        self.pd_motor_stretch_out_btn.clicked.connect(self.pd_motor_stretch_out)  # 伸
+        self.pd_motor_drawback_btn.clicked.connect(self.pd_motor_drawback)  # 缩
+        self.pd_poweron_btn.clicked.connect(self.pd_poweron)  # 下电
+        self.pd_poweroff_btn.clicked.connect(self.pd_poweroff)  # 下电
+        self.pd_selfcheck_btn.clicked.connect(self.pd_selfcheck)  # 自检
+        self.pd_motor_query_pos_btn.clicked.connect(self.pd_motor_query_pos)  # 查询局放电机位置
+        self.pd_motor_set_pos_btn.clicked.connect(self.pd_motor_set_pos)  # 设置局放电机位置
         self.pd_query_ultrasonic_value_btn.clicked.connect(self.pd_query_ultrasonic_value)  # 查询超声波值
-        self.pd_query_ultrasonic_PRPD_btn.clicked.connect(self.pd_query_ultrasonic_PRPD)    # 查询超声波prpd图谱
-        self.pd_query_ultrasonic_PRPS_btn.clicked.connect(self.pd_query_ultrasonic_PRPS)    # 查询超声波prps图谱
-        self.pd_query_UHF_TEV_value_btn.clicked.connect(self.pd_query_UHF_TEV_value)        # 查询地电波或高频值
-        self.pd_query_UHF_TEV_PRPD_btn.clicked.connect(self.pd_query_UHF_TEV_PRPD)          # 查询地电波或高频prpd图谱
-        self.pd_query_UHF_TEV_PRPS_btn.clicked.connect(self.pd_query_UHF_TEV_PRPS)          # 查询地电波或高频prps图谱
+        self.pd_query_ultrasonic_PRPD_btn.clicked.connect(self.pd_query_ultrasonic_PRPD)  # 查询超声波prpd图谱
+        self.pd_query_ultrasonic_PRPS_btn.clicked.connect(self.pd_query_ultrasonic_PRPS)  # 查询超声波prps图谱
+        self.pd_query_UHF_TEV_value_btn.clicked.connect(self.pd_query_UHF_TEV_value)  # 查询地电波或高频值
+        self.pd_query_UHF_TEV_PRPD_btn.clicked.connect(self.pd_query_UHF_TEV_PRPD)  # 查询地电波或高频prpd图谱
+        self.pd_query_UHF_TEV_PRPS_btn.clicked.connect(self.pd_query_UHF_TEV_PRPS)  # 查询地电波或高频prps图谱
 
     def clear_runinfo(self):
         self.runinfo_te.clear()
 
     def construct_cmd(self, device_type, data_len, opcode, data=''):
         cmd = bytearray()
-        cmd += bytearray.fromhex('5aa5') # 帧头
-        cmd += bytearray.fromhex(int2hex_str(1, 12)) # 总长度
+        cmd += bytearray.fromhex('5aa5')  # 帧头
+        cmd += bytearray.fromhex(int2hex_str(1, 12))  # 总长度
         cmd += bytearray.fromhex('01')  # 地址
-        cmd += bytearray.fromhex(int2hex_str(1, device_type)) # 设备类型
+        cmd += bytearray.fromhex(int2hex_str(1, device_type))  # 设备类型
 
         # cmd += bytearray.fromhex(self.int2hex_str(2, data_len)) # 数据域长度
-        cmd += bytearray.fromhex(int2hex_str(1, opcode)) # 操作码
+        cmd += bytearray.fromhex(int2hex_str(1, opcode))  # 操作码
         if data:
             cmd += bytearray.fromhex(int2hex_str(4, data))
         else:
@@ -154,6 +157,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
     def send_single_cmd(self, device_type, len, opcode, data, description):
         """
         针对单指令型的发送，如云台向下，云台向右，电机运行，查询云台方位等
+        :param opcode:
         :param device_type:
         :param len:
         :param data:
@@ -163,79 +167,154 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         cmd = self.construct_cmd(device_type, len, opcode, data)
         if self.send_data(cmd):
             if str(data):
-                run_msg = description  + '：' + str(data) + '：\n' + byte2hex_str(cmd) + '\n'
+                run_msg = description + '：' + str(data) + '：\n' + byte2hex_str(cmd) + '\n'
             else:
                 run_msg = '发送' + description + '指令：\n' + byte2hex_str(cmd) + '\n'
             self.runinfo_signal.emit(run_msg, None)
 
-
-#-------------------------云台指令-------------------------------
+    # -------------------------云台指令-------------------------------
     def ptz_poweron(self):
-        self.send_single_cmd(0x01, 0x01, 0x01, '', '云台上电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_power_on()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x01, '', '云台上电')
 
     def ptz_poweroff(self):
-        self.send_single_cmd(0x01, 0x01, 0x02, '', '云台下电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_power_off()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x02, '', '云台下电')
 
     def ptz_set_zero_position(self):
-        self.send_single_cmd(0x01, 0x01, 0x03, '', '校正云台')
+        if self.com_interface_cbb.currentIndex() == 1:
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x03, '', '校正云台')
 
     def ptz_vl_up(self):
-        self.send_single_cmd(0x01, 0x01, 0x04, '', '可见光俯仰向上')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_left_arm_up()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x04, '', '可见光俯仰向上')
 
     def ptz_vl_down(self):
-        self.send_single_cmd(0x01, 0x01, 0x05, '', '可见光俯仰向下')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_left_arm_down()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x05, '', '可见光俯仰向下')
 
     def ptz_ir_up(self):
-        self.send_single_cmd(0x01, 0x01, 0x06, '', '红外俯仰向上')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_right_arm_up()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x06, '', '红外俯仰向上')
 
     def ptz_ir_down(self):
-        self.send_single_cmd(0x01, 0x01, 0x07, '', '红外俯仰向下')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_right_arm_down()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x07, '', '红外俯仰向下')
 
     def ptz_left(self):
-        self.send_single_cmd(0x01, 0x01, 0x08, '', '云台方位向左')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_turn_left()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x08, '', '云台方位向左')
 
     def ptz_right(self):
-        self.send_single_cmd(0x01, 0x01, 0x09, '', '云台方位向右')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_turn_right()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x09, '', '云台方位向右')
 
     def ptz_stop(self):
-        self.send_single_cmd(0x01, 0x01, 0x0A, '', '云台停止')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_stop()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x0A, '', '云台停止')
 
     def ptz_set_bearing(self):
-        bearing = int(float(self.ptz_bearing_le.text())*100.0)
-        self.send_single_cmd(0x01, 0x01, 0x0B, bearing, '设置云台方位')
+        bearing = int(float(self.ptz_bearing_le.text()) * 100.0)
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_set_bearing_value(bearing)
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x0B, bearing, '设置云台方位')
         self.is_ptz_bearing_inplace = True
         self.ptz_inplace_le.setText('')
 
     def ptz_set_left_tilt(self):
-        left_tilt = int(float(self.ptz_set_left_tilt_le.text())*100.0)
-        self.send_single_cmd(0x01, 0x01, 0x0C, left_tilt, '设置可见光俯仰')
+        left_tilt = int(float(self.ptz_set_left_tilt_le.text()) * 100.0)
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_set_left_arm_pitch(left_tilt)
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x0C, left_tilt, '设置可见光俯仰')
         self.is_ptz_pitching_inplace = True
         self.ptz_inplace_le.setText('')
 
     def ptz_set_right_tilt(self):
-        right_tilt = int(float(self.ptz_set_right_tilt_le.text())*100.0)
-        self.send_single_cmd(0x01, 0x01, 0x0D, right_tilt, '设置红外俯仰')
+        right_tilt = int(float(self.ptz_set_right_tilt_le.text()) * 100.0)
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_set_right_arm_pitch(right_tilt)
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x0D, right_tilt, '设置红外俯仰')
         self.is_ptz_pitching_inplace = True
         self.ptz_inplace_le.setText('')
 
     def ptz_set_velocity(self):
         velocity = int(float(self.ptz_set_velocity_le.text()) * 100)
-        self.send_single_cmd(0x01, 0x03, 0x0E, velocity, '设置云台速度')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_set_positioning_speed(velocity)
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x03, 0x0E, velocity, '设置云台速度')
 
     def ptz_query_velocity(self):
-        self.send_single_cmd(0x01, 0x01, 0x0F, '', '查询云台速度')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_speed()
+
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x0F, '', '查询云台速度')
 
     def ptz_query_bearing(self):
-        self.send_single_cmd(0x01, 0x01, 0x10, '', '查询方位')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_bearing_val()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x10, '', '查询方位')
 
     def ptz_query_left_tilt(self):
-        self.send_single_cmd(0x01, 0x01, 0x11, '', '查询可见光俯仰')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x11, '', '查询可见光俯仰')
 
     def ptz_query_right_tilt(self):
-        self.send_single_cmd(0x01, 0x01, 0x12, '', '查询红外俯仰')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_right_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x12, '', '查询红外俯仰')
 
     def ptz_self_check(self):
-        self.send_single_cmd(0x01, 0x01, 0x1A, '', '云台自检')
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.avicRobot.ptz_self_test()
+            pass
+        else:
+            self.send_single_cmd(0x01, 0x01, 0x1A, '', '云台自检')
 
     def ptz_set_bearing_pitching(self):
         self.ptz_set_bearing()
@@ -247,142 +326,315 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         self.ptz_query_left_tilt()
         self.ptz_query_right_tilt()
 
-
-##--------------------------行走电机指令--------------------------
+    # --------------------------行走电机指令--------------------------
 
     def walkmotor_poweron(self):
-        self.send_single_cmd(0x03, 0x01, 0x01, '', '行走电机上电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x01, '', '行走电机上电')
 
     def walkmotor_poweroff(self):
-        self.send_single_cmd(0x03, 0x01, 0x02, '', '行走电机下电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x02, '', '行走电机下电')
 
     def walkmotor_backward(self):
-        self.send_single_cmd(0x03, 0x01, 0x04, '', '行走电机后退')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x04, '', '行走电机后退')
 
     def walkmotor_forward(self):
-        self.send_single_cmd(0x03, 0x01, 0x03, '', '行走电机前进')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x03, '', '行走电机前进')
 
     def walkmotor_stop(self):
-        self.send_single_cmd(0x03, 0x01, 0x05, '', '行走电机停止')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x05, '', '行走电机停止')
 
     def walkmotor_query_pos(self):
-        self.send_single_cmd(0x03, 0x01, 0x07, '', '查询行走电机位置')
-        self.is_walkmotor_inplace = True
-        self.walkmotor_inplace_le.setText('')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x07, '', '查询行走电机位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.is_walkmotor_inplace = True
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.walkmotor_inplace_le.setText('')
 
     def walkmotor_query_velocity(self):
-        self.send_single_cmd(0x03, 0x01, 0x0a, '', '查询行走电机速度')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x01, 0x0a, '', '查询行走电机速度')
 
     def walkmotor_set_pos(self):
         pos = int(float(self.walkmotor_pos_le.text()))
-        self.send_single_cmd(0x03, 0x03, 0x06, pos, '设置行走电机位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x03, 0x06, pos, '设置行走电机位置')
 
     def walkmotor_set_velocity(self):
         velocity = int(float(self.walkmotor_velocity_le.text()))
-        self.send_single_cmd(0x03, 0x03, 0x09, velocity, '设置行走电机速度')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x03, 0x03, 0x09, velocity, '设置行走电机速度')
 
-##----------------------升降杆指令-----------------------------------
+    # ----------------------升降杆指令-----------------------------------
     def lift_poweron(self):
-        self.send_single_cmd(0x05, 0x01, 0x01, '', '升降杆上电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x01, '', '升降杆上电')
 
     def lift_poweroff(self):
-        self.send_single_cmd(0x05, 0x01, 0x02, '', '升降杆下电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x02, '', '升降杆下电')
 
     def lifter_up(self):
-        self.send_single_cmd(0x05, 0x01, 0x03, '', '升降杆上升')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x03, '', '升降杆上升')
         self.lift_inplace_le.setText('')
         self.is_lift_inplace = True
 
     def lifter_down(self):
-        self.send_single_cmd(0x05, 0x01, 0x04, '', '升降杆下降')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x04, '', '升降杆下降')
         self.lift_inplace_le.setText('')
         self.is_lift_inplace = True
 
     def lifter_stop(self):
-        self.send_single_cmd(0x05, 0x01, 0x05, '', '升降杆停止')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x05, '', '升降杆停止')
 
     def lift_set_pos(self):
         pos = int(float(self.lift_pos_le.text()))
-        self.send_single_cmd(0x05, 0x03, 0x06, pos, '设置升降杆位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x03, 0x06, pos, '设置升降杆位置')
 
     def lifter_query_pos(self):
-        self.send_single_cmd(0x05, 0x01, 0x07, '', '查询升降杆位置')
-
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x07, '', '查询升降杆位置')
 
     def lift_query_velocity(self):
-        self.send_single_cmd(0x05, 0x01, 0x0a, '', '查询升降杆速度')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x01, 0x0a, '', '查询升降杆速度')
 
     def lift_set_velocity(self):
         velocity = int(float(self.lift_velocity_le.text()))
-        self.send_single_cmd(0x05, 0x03, 0x09, velocity, '设置升降杆速度')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x05, 0x03, 0x09, velocity, '设置升降杆速度')
 
-#--------------------局放、条形码、霍尔、测距指令------------------------
+    # --------------------局放、条形码、霍尔、测距指令------------------------
     def partialdischarge_detect(self):
-        self.send_single_cmd(0x02, 0x01, 0x01, '', '局放探测')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x01, '', '局放探测')
 
     def barcode_query_position(self):
-        self.send_single_cmd(0x04, 0x01, 0x01, '', '查询条形码位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x04, 0x01, 0x01, '', '查询条形码位置')
 
     def hall_query_position(self):
-        self.send_single_cmd(0x07, 0x01, 0x01, '', '查询霍尔位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x07, 0x01, 0x01, '', '查询霍尔位置')
 
     def ranging_query_position(self):
-        self.send_single_cmd(0x08, 0x01, 0x01, '', '查询测距位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x08, 0x01, 0x01, '', '查询测距位置')
 
-# -------------------------状态灯指令---------------------------------
+    # -------------------------状态灯指令---------------------------------
     def statuslight_red_on(self):
-        self.send_single_cmd(0x09, 0x01, 0x01, '', '红灯亮')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x09, 0x01, 0x01, '', '红灯亮')
 
     def statuslight_green_on(self):
-        self.send_single_cmd(0x09, 0x01, 0x03, '', '绿灯亮')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x09, 0x01, 0x03, '', '绿灯亮')
 
     def statuslight_yellow_on(self):
-        self.send_single_cmd(0x09, 0x01, 0x02, '', '黄灯亮')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x09, 0x01, 0x02, '', '黄灯亮')
 
     def statuslight_all_off(self):
-        self.send_single_cmd(0x09, 0x01, 0x04, '', '关灯亮')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x09, 0x01, 0x04, '', '关灯亮')
 
-# -------------------------局放指令---------------------------------
+    # -------------------------局放指令---------------------------------
     def pd_motor_stretch_out(self):
-        self.send_single_cmd(0x02, 0x01, 0x0F, '', '局放伸')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x0F, '', '局放伸')
 
     # device_type, len, opcode, data, description):
     def pd_motor_drawback(self):
-        self.send_single_cmd(0x02, 0x01, 0x10, '', '局放缩')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x10, '', '局放缩')
 
     def pd_poweron(self):
-        self.send_single_cmd(0x02, 0x01, 0x01, '', '局放上电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x01, '', '局放上电')
 
     def pd_poweroff(self):
-        self.send_single_cmd(0x02, 0x01, 0x02, '', '局放下电')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x02, '', '局放下电')
 
     def pd_selfcheck(self):
-        self.send_single_cmd(0x02, 0x01, 0x15, '', '局放自检')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x15, '', '局放自检')
 
     def pd_motor_query_pos(self):
-        self.send_single_cmd(0x02, 0x01, 0x12, '', '查询局放位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x12, '', '查询局放位置')
 
     def pd_motor_set_pos(self):
-        self.send_single_cmd(0x02, 0x01, 0x11, '', '设置局放位置')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x11, '', '设置局放位置')
 
     def pd_query_ultrasonic_value(self):
-        self.send_single_cmd(0x02, 0x01, 0x03, '', '查询超声波值')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x03, '', '查询超声波值')
 
     def pd_query_ultrasonic_PRPD(self):
-        self.send_single_cmd(0x02, 0x01, 0x04, '', '查询超声波PRPD图谱')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x04, '', '查询超声波PRPD图谱')
 
     def pd_query_ultrasonic_PRPS(self):
-        self.send_single_cmd(0x02, 0x01, 0x05, '', '查询超声波PRPS图谱')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x05, '', '查询超声波PRPS图谱')
 
     def pd_query_UHF_TEV_value(self):
-        self.send_single_cmd(0x02, 0x01, 0x06, '', '查询地电波/高频值')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x06, '', '查询地电波/高频值')
 
     def pd_query_UHF_TEV_PRPD(self):
-        self.send_single_cmd(0x02, 0x01, 0x07, '', '查询地电波/高频PRPD图谱')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x07, '', '查询地电波/高频PRPD图谱')
 
     def pd_query_UHF_TEV_PRPS(self):
-        self.send_single_cmd(0x02, 0x01, 0x08, '', '查询地电波/高频PRPS图谱')
+        if self.com_interface_cbb.currentIndex() == 1:
+            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            pass
+        else:
+            self.send_single_cmd(0x02, 0x01, 0x08, '', '查询地电波/高频PRPS图谱')
 
+    def on_com_interface_cbb_changed(self):
+        if self.com_interface_cbb.currentIndex() == 1:
+            self.net_type_cbb.setCurrentIndex(4)
+            self.ip_addr_le.setText('192.168.1.120')
+            self.port_le.setText('10000')
+            pass
+        else:
+            self.net_type_cbb.setCurrentIndex(0)
+            self.ip_addr_le.setText('192.168.1.30')
+            self.port_le.setText('8800')
+        pass
 
     def connect_net(self):
         """
@@ -398,6 +650,10 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
                 self.udp_server_start('', int(self.port_le.text()))
             elif self.net_type_cbb.currentIndex() == 3:
                 self.udp_client_start(str(self.ip_addr_le.text()), int(self.port_le.text()))
+            elif self.net_type_cbb.currentIndex() == 4:
+                endPoint = str(self.ip_addr_le.text() + ":" + self.port_le.text())
+                self.avicRobot.connect(endPoint)
+                pass
             self.link = True
             self.net_connect_btn.setText('断开')
             self.runinfo_signal.emit('连接成功\n', None)
@@ -416,6 +672,9 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
             self.udp_server_close()
         elif self.net_type_cbb.currentText() == 3:
             self.udp_client_close()
+        elif self.net_type_cbb.currentIndex() == 4:
+            self.udp_client_close()
+            pass
 
     # def closeEvent(self, event):
     #     # message为窗口标题
@@ -460,7 +719,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
                 return True
 
     def show_runinfo(self, info, data=None):
-        msg = '[' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')  + '] '+ info
+        msg = '[' + datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f') + '] ' + info
         self.runinfo_te.insertPlainText(msg)
         if data:
             if self.is_show_as_hex_cb.isChecked():
@@ -598,22 +857,21 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
         """
         frm_len = 12  # 固定帧长度
         recvd_msg = list(frame)
-        self.recv_data_buf += recvd_msg # 插入缓存底部
+        self.recv_data_buf += recvd_msg  # 插入缓存底部
         # 循环，从缓存中查找帧头
         i = 0
         while i <= (len(self.recv_data_buf) - frm_len):
             if self.recv_data_buf[i] == 0x5A and self.recv_data_buf[i + 1] == 0xA5:  # 找到帧头
                 if self.recv_data_buf[i + frm_len - 1] == 0xFF:  # 找到帧尾
-                    self.parse_one_frm(self.recv_data_buf[i : i+frm_len])
-                    del(self.recv_data_buf[i : i+frm_len])
+                    self.parse_one_frm(self.recv_data_buf[i: i + frm_len])
+                    del (self.recv_data_buf[i: i + frm_len])
                     i = 0
                 else:
                     del (self.recv_data_buf[i])
                     i = 0
             else:
-                del(self.recv_data_buf[i])
+                del (self.recv_data_buf[i])
                 i = 0
-
 
     def send_debug_msg(self):
         msg = str(self.send_debug_msg_te.toPlainText())
@@ -637,7 +895,7 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server,TCP_Client, UDP_Server,
             self.send_period = int(self.cycle_send_period_ms_le.text())
             if self.send_period == 0:
                 self.send_data(msg)
-            else:   # 开启循环发送线程
+            else:  # 开启循环发送线程
                 self.is_cycle_send = True
                 self.send_debug_msg_btn.setText('停止')
                 thd = threading.Thread(target=self.cycle_send)

@@ -54,6 +54,10 @@ class UDP_Client:
             except Exception as ret:
                 self.runinfo_signal.emit('发送失败\n', None)
 
+    def grpc_client_close(self):
+
+        pass
+
     def udp_client_close(self):
         """
         功能函数，关闭网络连接的方法
