@@ -330,21 +330,21 @@ class ORIR_Debug(QWidget, Ui_ORIR_Debug_Page, TCP_Server, TCP_Client, UDP_Server
 
     def walkmotor_poweron(self):
         if self.com_interface_cbb.currentIndex() == 1:
-            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            # ret = self.avicRobot.ptz_get_left_arm_pitch()
             pass
         else:
             self.send_single_cmd(0x03, 0x01, 0x01, '', '行走电机上电')
 
     def walkmotor_poweroff(self):
         if self.com_interface_cbb.currentIndex() == 1:
-            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            # ret = self.avicRobot.ptz_get_left_arm_pitch()
             pass
         else:
             self.send_single_cmd(0x03, 0x01, 0x02, '', '行走电机下电')
 
     def walkmotor_backward(self):
         if self.com_interface_cbb.currentIndex() == 1:
-            ret = self.avicRobot.ptz_get_left_arm_pitch()
+            ret = self.avicRobot.ptz_get_right_arm_pitch()
             pass
         else:
             self.send_single_cmd(0x03, 0x01, 0x04, '', '行走电机后退')
